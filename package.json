@@ -1,0 +1,53 @@
+{
+  "name": "dynamic-calendar",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "start": "adalo dev",
+    "build": "adalo build",
+    "login": "adalo login",
+    "publish": "adalo publish",
+    "start:local": "ADALO_DEV_SERVER=http://localhost:3035 yarn start",
+    "login:local": "ADALO_BACKEND_SERVER=http://localhost:8084 yarn run login"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16",
+    "react-native": "*"
+  },
+  "adalo": {
+    "displayName": "Calendar",
+    "components": [
+      {
+        "name": "DynamicCalendar",
+        "manifest": "./src/components/DynamicCalendar/manifest.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@adalo/cli": "^0.0.30",
+    "react": "^16.5.2",
+    "react-art": "^16.6.0",
+    "react-dom": "^16.5.2",
+    "react-native-web": "^0.9.5"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
+    "lighten-darken-color": "^1.0.0",
+    "moment": "^2.26.0",
+    "react-native-calendar-events": "^1.7.3",
+    "react-native-calendar-strip": "^2.0.1",
+    "react-native-calendars": "^1.265.0",
+    "react-native-event-calendar-customized": "^1.0.19",
+    "react-native-events-calendar": "git+https://github.com/joshjhargreaves/react-native-event-calendar.git"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshjhargreaves/react-native-event-calendar.git"
+  }
+}
