@@ -48,7 +48,6 @@ export default function styleConstructor(theme = {}, calendarHeight, headerColor
     },
     arrowButton: {
       width: 50,
-      alignItems: 'left',
       justifyContent: 'center',
       ...theme.arrowButton,
     },
@@ -73,6 +72,7 @@ export default function styleConstructor(theme = {}, calendarHeight, headerColor
       color: eventTextColor,
       fontWeight: '600',
       minHeight: 15,
+      flexWrap: 'wrap',
       ...theme.eventTitle,
     },
     eventSummary: {
@@ -108,7 +108,6 @@ export default function styleConstructor(theme = {}, calendarHeight, headerColor
       left: 15,
       color: 'rgb(170,170,170)',
       fontSize: 10,
-      fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'Roboto',
       fontWeight: '500',
       ...theme.timeLabel,
     },

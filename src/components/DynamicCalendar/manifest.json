@@ -31,25 +31,29 @@
       "control": {
         "type": "menu",
         "options": [
+          { "label": "Arabic", "value": "Arabic" },
           { "label": "Chinese", "value": "Chinese" },
           { "label": "English", "value": "English" },
           { "label": "French", "value": "French" },
           { "label": "German", "value": "German" },
+          { "label": "Japanese", "value": "Japanese" },
+          { "label": "Portuguese", "value": "Portuguese" },
           { "label": "Spanish", "value": "Spanish" }
         ]
       }
     },
     {
       "name": "mondayBegin",
-      "displayName": "Start with Monday",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "name": "periodMarking",
-      "displayName": "Period Marking",
-      "type": "boolean",
-      "default": false
+      "displayName": "Begin on What Day?",
+      "type": "number",
+      "default": 1,
+      "control": {
+        "type": "menu",
+        "options": [
+          { "label": "Sunday", "value": 0 },
+          { "label": "Monday", "value": 1 }
+        ]
+      }
     }
   ],
   "childComponents": [
@@ -118,6 +122,19 @@
           "displayName": "Allow Changing Months?",
           "type": "boolean",
           "default": true
+        },
+        {
+          "name": "markingStyle",
+          "displayName": "Event Marking Style",
+          "type": "text",
+          "default": "multi-dot",
+          "control": {
+            "type": "menu",
+            "options": [
+              { "label": "Dots", "value": "multi-dot" },
+              { "label": "Periods", "value": "multi-period" }
+            ]
+          }
         }
 	  ]
     },

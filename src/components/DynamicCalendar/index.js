@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import EventCalendar from './eventCal/EventCalendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import {LocaleConfig} from 'react-native-calendars';
 import * as moment from 'moment';
+
+LocaleConfig.locales['Arabic'] = {
+    monthNames: ['يناير'	, 'فبراير' , 'مارس' , 'أبريل' , 'مايو' , 'يونيه' , 'يوليه' , 'أغسطس' , 'سبتمبر' , 'أكتوبر' , 'نوفمبر' , 'ديسمبر'],
+    dayNames: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+    dayNamesShort: ['日', '一', '二', '三', '四', '五', '六'],
+};
 
 LocaleConfig.locales['Chinese'] = {
     monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
@@ -35,6 +41,27 @@ LocaleConfig.locales['German'] = {
 	dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
 };
 
+LocaleConfig.locales['Hindi'] = {
+    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    monthNamesShort: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
+    dayNames: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+    dayNamesShort: ['日', '月', '火', '水', '木', '金', '土'],
+};
+
+LocaleConfig.locales['Japanese'] = {
+    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    monthNamesShort: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
+    dayNames: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+    dayNamesShort: ['日', '月', '火', '水', '木', '金', '土'],
+};
+
+LocaleConfig.locales['Portuguese'] = {
+	monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro','Outubro','Novembro','Dezembro'],
+	monthNamesShort: ['Jan.','Fev.','Mar.','Apr.','Mai.','Jun.','Jul.','Ago.','Set.','Out.','Nov.','Dez.'],
+	dayNames: ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'],
+	dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+};
+
 LocaleConfig.locales['Spanish'] = {
 	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 	monthNamesShort: ['Ene.','Feb.','Mar.','Abr.','May.','Jun.','Jul.','Ago.','Set.','Oct.','Nov.','Dic.'],
@@ -49,29 +76,36 @@ class DynamicCalendar extends Component {
 		this.multiDotRender.bind(this)
 		this.getDates.bind(this)
 		this.insertHash.bind(this)
-		this.pushDate.bind(this)
 		this.formatDate.bind(this)
 		this.pushAgendaEvents.bind(this)
 		this.state = {
 			calendarRender: true,
-			chosenDay:  '2020-06-13',
-			realWidth: 400,
+			chosenDay:  moment().format("YYYY-MM-DD"),
+			realWidth: 375,
+			goBackTrigger: false,
+			datesHash2: new Map()
 		};
 	  }
-	  onDayPress = (day) => {
+	  // runs when user clicks calendar day
+	  onDayPress = (day) => {	
+		// let { items } = this.props;
+		// let { onPressEvent } = items[0].agenda;
+		// console.log(this.state.datesHash2.get(day.dateString))
+		// if(this.state.datesHash2.get(day.dateString) == 1){
+			
+		// }
 		this.setState({chosenDay: day.dateString});
 		this.setState({realWidth: document.getElementById('foo').getBoundingClientRect().width});
 		this.setState({calendarRender: !this.state.calendarRender});
 	  }
-	  
-	  eventClicked(event) {
 
-	  }
-
+	  // runs when user clicks back button on agenda 
 	  goBack() {
 		this.setState({calendarRender: !this.state.calendarRender});
+		this.setState({goBackTrigger: true});
 	  }
 
+	  // renders multi-dot markings on calendar
 	  multiDotRender(number, activeColor){
 		  let markerDots = {color: activeColor};
 		  let multiDotArray = [markerDots]
@@ -81,6 +115,7 @@ class DynamicCalendar extends Component {
 		  return multiDotArray
 	  }
 	  
+	  // returns an array of all dates between the two inputs
 	  getDates(startDate, endDate) {
 		let dates = [],
 		currentDate = startDate,
@@ -101,6 +136,7 @@ class DynamicCalendar extends Component {
 		return dates;
 	  }
 	
+	// adds specified property to hash index
 	insertHash(array, hash, property){
 		if(hash.get(array) == undefined){
 			let tempArray = []
@@ -115,51 +151,29 @@ class DynamicCalendar extends Component {
 		}
 	}
 
-	pushDate(date, markedDatesArray, periodArray){
-		let datePush = date.getFullYear() + "-"
-		if(date.getMonth()+1 > 10){ 
-			datePush += (date.getMonth()+1) 
-		}
-		else{
-			datePush += '0' + (date.getMonth()+1) 
-		}
-		if(date.getDate()+1 > 10){
-			markedDatesArray.push(datePush += "-" + date.getDate())
-			if(periodArray != undefined){
-				periodArray.push(datePush)
-			}
-		}
-		else{
-			markedDatesArray.push(datePush += "-0" + date.getDate())
-			if(periodArray != undefined){
-				periodArray.push(datePush)
-			}
-		}
-		return datePush
-	}
-
+	// formats date with optional time 
 	formatDate(date, wantTime){
 		let datePush = date.getFullYear() + "-"
-		if(date.getMonth()+1 > 10){ 
+		if(date.getMonth()+1 > 9){ 
 			datePush += (date.getMonth()+1) 
 		}
 		else{
 			datePush += '0' + (date.getMonth()+1) 
 		}
-		if(date.getDate()+1 > 10){
+		if(date.getDate() > 9){
 			datePush += "-" + date.getDate()
 		}
 		else{
 			datePush += "-0" + date.getDate()		
 		}
 		if(wantTime){
-			if(date.getHours() > 10){
+			if(date.getHours() > 9){
 				datePush += " " + date.getHours()
 			}
 			else{
 				datePush += " 0" + date.getHours()		
 			}
-			if(date.getMinutes() > 10){
+			if(date.getMinutes() > 9){
 				datePush += ":" + date.getMinutes()
 			}
 			else{
@@ -169,6 +183,7 @@ class DynamicCalendar extends Component {
 		return datePush
 	}
 
+	// pushes event details onto agenda events array
 	pushAgendaEvents(agendaEvents, start, end, title, subtitle){
 		agendaEvents.push(
 			{ 
@@ -182,15 +197,7 @@ class DynamicCalendar extends Component {
 	  
 	  render() {
 		// calendar
-		let { items, language, mondayBegin, periodMarking, colors, navigation, agenda } = this.props;
-		let markerStyle = 'multi-dot'
-		if(periodMarking){
-			markerStyle = 'multi-period'
-		}
-		let monday = 0;
-		if(mondayBegin){
-			monday = 1;
-		}
+		let { items, language, mondayBegin, colors, navigation } = this.props;
 		LocaleConfig.defaultLocale = language;
 		let monthValue = this.state.chosenDay.substring(this.state.chosenDay.length-5,this.state.chosenDay.length-3);
 		if(this.state.chosenDay[this.state.chosenDay.length-5].localeCompare('0') == 0){
@@ -201,7 +208,7 @@ class DynamicCalendar extends Component {
 		// colors
 		let { activeColor, textColor, disabledColor, bgColor, headingTextColor } = colors;
 		// navigation
-		let { defDate, minDate, maxDate, changeMonths } = navigation;
+		let { defDate, minDate, maxDate, changeMonths, markingStyle } = navigation;
 		let formats = [
 			moment.ISO_8601,
 			"YYYY-MM-DD"
@@ -210,6 +217,10 @@ class DynamicCalendar extends Component {
 
 		if (moment(defDate, formats, true).isValid()){
 			startDate = defDate;
+		}
+
+		if(this.state.goBackTrigger){
+			startDate = this.state.chosenDay
 		}
 		const nextDays = [
 			startDate
@@ -224,9 +235,11 @@ class DynamicCalendar extends Component {
 		let eventBgColorPass = "#ffffff"
 		let eventTextColorPass = "#000000"
 		let agendaRenderPass = false
+		let onPressEventPass = () => {}
 		let agendaEvents = []
 		if(items != undefined && items != null){
 			let { eventBgColor, eventTextColor, agendaRender, onPressEvent } = items[0].agenda;
+			onPressEventPass = onPressEvent
 			eventBgColorPass = eventBgColor
 			eventTextColorPass = eventTextColor
 			agendaRenderPass = agendaRender
@@ -235,26 +248,40 @@ class DynamicCalendar extends Component {
 			let eventStarttimeArray = []
 			let eventEndtimeArray = []
 			let markedDatesArray = []
-			let periodHash = new Map()
 			for(let i = 0; i < items.length; ++i){
 				eventTitleArray.push(items[i].agenda.eventTitle)
 				eventSubtitleArray.push(items[i].agenda.eventSubtitle)
 				eventStarttimeArray.push(items[i].agenda.eventStarttime)
 				eventEndtimeArray.push(items[i].agenda.eventEndtime)
-				let periodArray = []
-				if(items[i].agenda.eventEndtime != undefined && items[i].agenda.eventStarttime != undefined ){
-					if (this.formatDate(new Date(eventStarttimeArray[i]), false) != this.formatDate(new Date(eventEndtimeArray[i]), false)){
-						let dates = this.getDates(new Date(eventStarttimeArray[i]).setHours(0, 0, 0, 0), new Date(eventEndtimeArray[i]).setHours(0, 0, 0, 0));                                                                                                    
-						for(let j = 0; j < dates.length; ++j){
-							this.pushDate(dates[j], markedDatesArray, periodArray)
-						}
-					}
-					else{
-						markedDatesArray.push(this.formatDate(new Date(eventEndtimeArray[i]), false))
-						periodArray.push(this.formatDate(new Date(eventEndtimeArray[i]), false))
+				let startTime = new Date(eventStarttimeArray[i]).getFullYear() + "-" + (new Date(eventStarttimeArray[i]).getMonth()+1) + '-' + new Date(eventStarttimeArray[i]).getDate()
+				let endTime = new Date(eventEndtimeArray[i]).getFullYear() + "-" + (new Date(eventEndtimeArray[i]).getMonth()+1) + '-' + new Date(eventEndtimeArray[i]).getDate()
+				if(startTime == endTime){
+					if(this.formatDate(new Date(eventStarttimeArray[i]), true) != this.formatDate(new Date(eventEndtimeArray[i]), true)){
+						this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(eventStarttimeArray[i]), true), this.formatDate(new Date(eventEndtimeArray[i]), true), eventTitleArray[i], eventSubtitleArray[i])
+						markedDatesArray.push(this.formatDate(new Date(eventStarttimeArray[i]), false))
 					}
 				}
-				periodHash.set(i, periodArray)
+				else{
+					if(this.formatDate(new Date(eventStarttimeArray[i]), false) + " 23:59" != this.formatDate(new Date(eventStarttimeArray[i]), true)){
+						this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(eventStarttimeArray[i]), true), this.formatDate(new Date(eventStarttimeArray[i]), false) + " 23:59", eventTitleArray[i], eventSubtitleArray[i])
+						markedDatesArray.push(this.formatDate(new Date(eventStarttimeArray[i]), false))
+					}
+					let dates = this.getDates(new Date(startTime),new Date(endTime));   
+					for(let j = 1; j < dates.length - 1; ++j){
+						let datePush = this.formatDate(new Date(dates[j]), false)
+						this.pushAgendaEvents(agendaEvents, datePush + ' 00:00', datePush + ' 23:59', eventTitleArray[i], eventSubtitleArray[i])
+						markedDatesArray.push(datePush)
+					}
+					if(this.formatDate(new Date(eventEndtimeArray[i]), false) + " 00:00" != this.formatDate(new Date(eventEndtimeArray[i]), true)){
+						this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(eventEndtimeArray[i]), false) + " 00:00", this.formatDate(new Date(eventEndtimeArray[i]), true), eventTitleArray[i], eventSubtitleArray[i])
+						markedDatesArray.push(this.formatDate(new Date(eventEndtimeArray[i]), false))
+					}
+				}
+			}
+			if(items[0].agenda.eventStarttime == undefined){
+				let passDate = new Date(this.state.chosenDay);
+				passDate.setDate(passDate.getDate() + 1);
+				this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(passDate), false) + " 00:00", this.formatDate(new Date(passDate), false) + " 23:59", "Example Title", "Example Subtitle")
 			}
 			let datesHash = new Map()
 			for(let i = 0; i < markedDatesArray.length; ++i){
@@ -265,97 +292,31 @@ class DynamicCalendar extends Component {
 					}
 				}
 				datesHash.set(markedDatesArray[i], count)
+				this.state.datesHash2.set(markedDatesArray[i], count)
 			}
-			let overlapArray = []
-			for(let i = 0; i < markedDatesArray.length; ++i){
-				if (datesHash.get(markedDatesArray[i]) > 1){
-					overlapArray.push(markedDatesArray[i])
-				}
-			}
-			let overlapMarkedArray = []
-			for(let i = 0; i < periodHash.size; ++i){
-				let count = 0
-				for(let j = 0; j < periodHash.get(i).length; ++j){
-					for(let k = 0; k < overlapArray.length; ++k){
-						if(overlapArray[k] == periodHash.get(i)[j]){
-							count++
-						}
-					}
-				}
-				if(count != 0){
-					periodHash.get(i).forEach((day) => {
-						overlapMarkedArray.push(day)
-					});
-				}
-			}
-			if(!periodMarking){
+			if(markingStyle == 'multi-dot'){
 				markedDatesArray.forEach((day) => {
+					let selected = false
+					if(day==startDate){
+						selected = true
+					}
 					calAgendaObject[day] = {
-					dots: this.multiDotRender(datesHash.get(day), activeColor)
+					dots: this.multiDotRender(datesHash.get(day), activeColor),
+					selected: selected
 				};
 				});
 			}
 			else{
-				let finalHash = new Map()
-				for(let i = 0; i < periodHash.size; ++i){
-					let startingDayTrue = {startingDay: true, endingDay: false, color: activeColor};
-					let endingDayTrue = {startingDay: false, endingDay: true, color: activeColor};
-					let neitherTrue = {startingDay: false, endingDay: false, color: activeColor};
-					let datesArray = periodHash.get(i)
-					let maxSize = 0;
-					if (datesArray.length == 1){
-						this.insertHash(datesArray[0], finalHash, {startingDay: true, endingDay: true, color: activeColor})
-					}
-					else{
-						this.insertHash(datesArray[0], finalHash, startingDayTrue)
-						for(let j = 1; j < datesArray.length-1; ++j){
-							this.insertHash(datesArray[j], finalHash, neitherTrue)
-						}
-						this.insertHash(datesArray[datesArray.length-1], finalHash, endingDayTrue)
-					}
-					for (let j = 0; j < finalHash.size; ++j){
-						if (finalHash.get(overlapMarkedArray[j]) != undefined){
-							if (finalHash.get(overlapMarkedArray[j]).length > maxSize){
-								maxSize = finalHash.get(overlapMarkedArray[j]).length
-							}
-						}
-					}
-					for (let j = 0; j < overlapMarkedArray.length; ++j){
-						if (finalHash.get(overlapMarkedArray[j]) != undefined){
-							while (finalHash.get(overlapMarkedArray[j]).length != maxSize){
-								let tempArray = finalHash.get(overlapMarkedArray[j])
-								tempArray.push({color: 'transparent'})
-								finalHash.set(overlapMarkedArray[j], tempArray);
-							}
-						}
-						else{
-							let tempArray = []
-							tempArray.push({color: 'transparent'})
-							finalHash.set(overlapMarkedArray[j], tempArray);
-						}
-					}
-				}
 				markedDatesArray.forEach((day) => {
+					let selected = false
+					if(day==startDate){
+						selected = true
+					}
 					calAgendaObject[day] = {
-					periods: finalHash.get(day)
+					periods: [{startingDay: false, endingDay: false, color: activeColor}],
+					selected: selected
 				};
 				});
-			}
-			for(let i = 0; i < items.length; ++i){
-				let startTime = new Date(eventStarttimeArray[i]).getFullYear() + "-" + (new Date(eventStarttimeArray[i]).getMonth()+1) + '-' + new Date(eventStarttimeArray[i]).getDate()
-				let endTime = new Date(eventEndtimeArray[i]).getFullYear() + "-" + (new Date(eventEndtimeArray[i]).getMonth()+1) + '-' + new Date(eventEndtimeArray[i]).getDate()
-				if(startTime == endTime){
-					this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(eventStarttimeArray[i]), true), this.formatDate(new Date(eventEndtimeArray[i]), true), eventTitleArray[i], eventSubtitleArray[i])
-				}
-				else{
-					this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(eventStarttimeArray[i]), true), this.formatDate(new Date(eventStarttimeArray[i]), false) + " 23:59", eventTitleArray[i], eventSubtitleArray[i])
-					let dates = this.getDates(new Date(startTime),new Date(endTime));   
-					for(let j = 1; j < dates.length - 1; ++j){
-						let datePush = this.pushDate(dates[j], markedDatesArray)
-						this.pushAgendaEvents(agendaEvents, datePush + ' 00:00', datePush + ' 23:59', eventTitleArray[i], eventSubtitleArray[i])
-					}
-					this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(eventEndtimeArray[i]), false) + " 00:00", this.formatDate(new Date(eventEndtimeArray[i]), true), eventTitleArray[i], eventSubtitleArray[i])
-				}
 			}
 		}
 		if((agendaRenderPass && !this.state.calendarRender) || (!agendaRenderPass && this.state.calendarRender)){
@@ -363,7 +324,7 @@ class DynamicCalendar extends Component {
 				<div id="foo">
 				<View style={{ flex: 1, marginTop: 20 }}>
 					<Calendar
-						firstDay={monday}
+						firstDay={mondayBegin}
 						onDayPress={this.onDayPress}
 						minDate = {minDate}
 						maxDate = {maxDate}
@@ -371,7 +332,7 @@ class DynamicCalendar extends Component {
 						hideArrows={!changeMonths}
 						renderArrow={(direction) => direction === 'left' ? <FontAwesomeIcon icon={faChevronLeft} color={activeColor}/> : <FontAwesomeIcon icon={faChevronRight} color={activeColor}/>}
 						markedDates={calAgendaObject}
-						markingType={markerStyle}
+						markingType={markingStyle}
 						theme={{
 							calendarBackground: bgColor,
 							textSectionTitleColor: textColor,
@@ -399,7 +360,7 @@ class DynamicCalendar extends Component {
 			return (
 				<View style={{ flex: 1, marginTop: 20 }}>
 				  <EventCalendar {...this.props} title={dayValue + " " + LocaleConfig.locales[language].monthNames[monthValue - 1] + " " + yearValue} headerColor={bgColor} headerTextColor={headingTextColor} eventBgColor={eventBgColorPass} eventTextColor={eventTextColorPass}
-					eventTapped={this.eventClicked.bind(this)}
+					eventTapped={onPressEventPass}
 					backButton={this.goBack.bind(this)}
 					events={agendaEvents}
 					width={this.state.realWidth}
@@ -415,32 +376,72 @@ class DynamicCalendar extends Component {
 export default DynamicCalendar
 
 
-	// let overlapHash = new Map()
-	// let noOverlapHash = new Map()
-	// let overlapMarkedArray = []
-	// for(let i = 0; i < periodHash.size; ++i){
-	// 	let count = 0
-	// 	for(let j = 0; j < periodHash.get(i).length; ++j){
-	// 		for(let k = 0; k < overlapArray.length; ++k){
-	// 			if(overlapArray[k] == periodHash.get(i)[j]){
-	// 				count++
-	// 			}
-	// 		}
-	// 	}
-	// 	if(count != 0){
-	// 		overlapHash.set(overlapHash.size, periodHash.get(i))
-	// 		periodHash.get(i).forEach((day) => {
-	// 			overlapMarkedArray.push(day)
-	// 		});
-	// 	}
-	// 	else{
-	// 		noOverlapHash.set(noOverlapHash.size, periodHash.get(i))
-	// 	}
-	// }
-
-	// for(let i = 0; i < overlapHash.size; ++i){
-	// 	periodHash.set(i, overlapHash.get(i))
-	// }
-	// for(let i = 0; i < noOverlapHash.size; ++i){
-	// 	periodHash.set(i+overlapHash.size, noOverlapHash.get(i))
-	// }
+// let overlapArray = []
+// for(let i = 0; i < markedDatesArray.length; ++i){
+// 	if (datesHash.get(markedDatesArray[i]) > 1){
+// 		overlapArray.push(markedDatesArray[i])
+// 	}
+// }
+// let overlapMarkedArray = []
+// let overlapHash = new Map()
+// for(let i = 0; i < periodHash.size; ++i){
+// 	let count = 0
+// 	for(let j = 0; j < periodHash.get(i).length; ++j){
+// 		for(let k = 0; k < overlapArray.length; ++k){
+// 			if(overlapArray[k] == periodHash.get(i)[j]){
+// 				count++
+// 			}
+// 		}
+// 	}
+// 	if(count != 0){
+// 		overlapHash.set(overlapHash.size, periodHash.get(i))
+// 		periodHash.get(i).forEach((day) => {
+// 			overlapMarkedArray.push(day)
+// 		});
+// 	}
+// }
+// let finalHash = new Map()
+// 				for(let i = 0; i < periodHash.size; ++i){
+// 					let startingDayTrue = {startingDay: true, endingDay: false, color: activeColor};
+// 					let endingDayTrue = {startingDay: false, endingDay: true, color: activeColor};
+// 					let neitherTrue = {startingDay: false, endingDay: false, color: activeColor};
+// 					let datesArray = periodHash.get(i)
+// 					if (datesArray.length == 1){
+// 						this.insertHash(datesArray[0], finalHash, {startingDay: true, endingDay: true, color: activeColor})
+// 					}
+// 					else{
+// 						this.insertHash(datesArray[0], finalHash, startingDayTrue)
+// 						for(let j = 1; j < datesArray.length-1; ++j){
+// 							this.insertHash(datesArray[j], finalHash, neitherTrue)
+// 						}
+// 						this.insertHash(datesArray[datesArray.length-1], finalHash, endingDayTrue)
+// 					}
+// 					let maxSize = 0
+// 					for (let j = 0; j < overlapHash.size; ++j){
+// 						for (let k = 0; k < overlapHash.get(j).length; ++k){
+// 							if (finalHash.get(overlapHash.get(j)[k]) != undefined){
+// 								if (finalHash.get(overlapHash.get(j)[k]).length > maxSize){
+// 									maxSize = finalHash.get(overlapHash.get(j)[k]).length
+// 								}
+// 							}
+// 						}
+// 						for (let k = 0; k < overlapHash.get(j).length; ++k){
+// 							if (finalHash.get(overlapHash.get(j)[k]) != undefined){
+// 								while (finalHash.get(overlapHash.get(j)[k]).length != maxSize){
+// 									let tempArray = finalHash.get(overlapHash.get(j)[k])
+// 									tempArray.push({color: 'transparent'})
+// 									finalHash.set(overlapHash.get(j)[k], tempArray);
+// 								}
+// 							}
+// 							else{
+// 								let tempArray = []
+// 								tempArray.push({color: 'transparent'})
+// 								finalHash.set(overlapHash.get(j)[k], tempArray);
+// 								while (finalHash.get(overlapHash.get(j)[k]).length != maxSize){
+// 									tempArray = finalHash.get(overlapHash.get(j)[k])
+// 									tempArray.push({color: 'transparent'})
+// 									finalHash.set(finalHash.get(overlapHash.get(j)[k]), tempArray);
+// 								}
+// 							}
+// 						}
+// 					}
