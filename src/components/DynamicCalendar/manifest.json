@@ -14,7 +14,7 @@
       "name": "oneEventAction",
       "displayName": "Clicking days with only one event should...",
       "type": "text",
-      "default": "action",
+      "default": "agenda",
       "control": {
         "type": "menu",
         "options": [
@@ -22,6 +22,14 @@
           { "label": "Open the Agenda View", "value": "agenda" }
         ]
       }
+    },
+    {
+      "name": "onPressCalendar",
+      "displayName": "Click Actions",
+      "type": "action",
+      "role": "listItem",
+      "reference": "items",
+      "enabled": { "oneEventAction": "action" }
     },
     {
       "name": "language",
@@ -36,6 +44,7 @@
           { "label": "English", "value": "English" },
           { "label": "French", "value": "French" },
           { "label": "German", "value": "German" },
+          { "label": "Hindi", "value": "Hindi" },
           { "label": "Japanese", "value": "Japanese" },
           { "label": "Portuguese", "value": "Portuguese" },
           { "label": "Spanish", "value": "Spanish" }
@@ -125,14 +134,14 @@
         },
         {
           "name": "markingStyle",
-          "displayName": "Event Marking Style",
+          "displayName": "Multi-Day Event Marking Style",
           "type": "text",
           "default": "multi-dot",
           "control": {
             "type": "menu",
             "options": [
               { "label": "Dots", "value": "multi-dot" },
-              { "label": "Periods", "value": "multi-period" }
+              { "label": "Bars", "value": "multi-period" }
             ]
           }
         }
@@ -146,7 +155,7 @@
       "props": [ 
         {
           "name": "agendaRender",
-          "displayName": "Enable Agenda Render",
+          "displayName": "Show Preview of Agenda View",
           "type": "boolean",
           "default": false
         },
@@ -175,14 +184,14 @@
         {
 
           "name": "eventStarttime",
-          "displayName": "Event Start Times",
+          "displayName": "Event Start Dates & Times",
           "role": "listItem",
           "reference": "items",
           "type": "date"
         },
         {
           "name": "eventEndtime",
-          "displayName": "Event End Times",
+          "displayName": "Event End Dates & Times",
           "role": "listItem",
           "reference": "items",
           "type": "date"
@@ -190,8 +199,7 @@
         {
           "name": "onPressEvent",
           "displayName": "Click Actions",
-          "type": "action",
-          "default": " "
+          "type": "action"
         }
       ]
     }

@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import EventCalendar from './eventCal/EventCalendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import {LocaleConfig} from 'react-native-calendars';
 import * as moment from 'moment';
+import * as defaultStyle from './defaultStyles';
 
 LocaleConfig.locales['Arabic'] = {
-    monthNames: ['يناير'	, 'فبراير' , 'مارس' , 'أبريل' , 'مايو' , 'يونيه' , 'يوليه' , 'أغسطس' , 'سبتمبر' , 'أكتوبر' , 'نوفمبر' , 'ديسمبر'],
-    dayNames: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-    dayNamesShort: ['日', '一', '二', '三', '四', '五', '六'],
+	monthNames: ['يناير'	, 'فبراير' , 'مارس' , 'أبريل' , 'مايو' , 'يونيه' , 'يوليه' , 'أغسطس' , 'سبتمبر' , 'أكتوبر' , 'نوفمبر' , 'ديسمبر'],
+	monthNamesShort: ['يناير'	, 'فبراير' , 'مارس' , 'أبريل' , 'مايو' , 'يونيه' , 'يوليه' , 'أغسطس' , 'سبتمبر' , 'أكتوبر' , 'نوفمبر' , 'ديسمبر'],
+    dayNames: ['الاحد', 'الاثنين', 'الثلاثاء', 'الاربعاء', 'الاربعاء', 'الجمعة', 'السبت'],
+	dayNamesShort: ['الاحد', 'الاثنين', 'الثلاثاء', 'الاربعاء', 'الاربعاء', 'الجمعة', 'السبت'],
+	
 };
 
 LocaleConfig.locales['Chinese'] = {
@@ -42,10 +45,10 @@ LocaleConfig.locales['German'] = {
 };
 
 LocaleConfig.locales['Hindi'] = {
-    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    monthNamesShort: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
-    dayNames: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
-    dayNamesShort: ['日', '月', '火', '水', '木', '金', '土'],
+    monthNames: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्तूबर', 'नवंबर', 'दिसंबर'],
+    monthNamesShort: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्तूबर', 'नवंबर', 'दिसंबर'],
+    dayNames: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'],
+    dayNamesShort: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'],
 };
 
 LocaleConfig.locales['Japanese'] = {
@@ -75,28 +78,41 @@ class DynamicCalendar extends Component {
 		super(props);
 		this.multiDotRender.bind(this)
 		this.getDates.bind(this)
-		this.insertHash.bind(this)
 		this.formatDate.bind(this)
 		this.pushAgendaEvents.bind(this)
+		this.onLayout.bind(this)
 		this.state = {
 			calendarRender: true,
 			chosenDay:  moment().format("YYYY-MM-DD"),
 			realWidth: 375,
 			goBackTrigger: false,
-			datesHash2: new Map()
+			datesHash: new Map(),
+			agendaEvents: [],
+			height: 32,
 		};
 	  }
+	  
 	  // runs when user clicks calendar day
 	  onDayPress = (day) => {	
-		// let { items } = this.props;
-		// let { onPressEvent } = items[0].agenda;
-		// console.log(this.state.datesHash2.get(day.dateString))
-		// if(this.state.datesHash2.get(day.dateString) == 1){
-			
-		// }
 		this.setState({chosenDay: day.dateString});
 		this.setState({realWidth: document.getElementById('foo').getBoundingClientRect().width});
-		this.setState({calendarRender: !this.state.calendarRender});
+		let { oneEventAction } = this.props
+		if(oneEventAction == 'action' && this.state.datesHash.get(day.dateString) == 1){
+			this.setState({goBackTrigger: true});
+			let passDate = new Date(day.dateString);
+			passDate.setDate(passDate.getDate() + 1);
+			let id;
+			for(let i = 0; i < this.state.agendaEvents.length; ++i){
+				if(this.formatDate(new Date(this.state.agendaEvents[i].start), false) == this.formatDate(new Date(passDate), false)){
+					id = this.state.agendaEvents[i].id
+				}
+			}
+			let { onPressCalendar } = this.props.items[Number(id)];
+			onPressCalendar()
+		}
+		else{
+			this.setState({calendarRender: !this.state.calendarRender});
+		}
 	  }
 
 	  // runs when user clicks back button on agenda 
@@ -135,21 +151,6 @@ class DynamicCalendar extends Component {
 		}
 		return dates;
 	  }
-	
-	// adds specified property to hash index
-	insertHash(array, hash, property){
-		if(hash.get(array) == undefined){
-			let tempArray = []
-			tempArray.push(property)
-			hash.set(array, tempArray);
-		}
-		else{
-			let tempArray = []
-			tempArray = hash.get(array)
-			tempArray.push(property)
-			hash.set(array, tempArray);
-		}
-	}
 
 	// formats date with optional time 
 	formatDate(date, wantTime){
@@ -184,9 +185,10 @@ class DynamicCalendar extends Component {
 	}
 
 	// pushes event details onto agenda events array
-	pushAgendaEvents(agendaEvents, start, end, title, subtitle){
+	pushAgendaEvents(agendaEvents, i, start, end, title, subtitle){
 		agendaEvents.push(
 			{ 
+				id: i,
 				start: start, 
 				end: end, 
 				title: title, 
@@ -194,8 +196,22 @@ class DynamicCalendar extends Component {
 			}
 		)
 	}
+
+	// runs when user taps an event
+	_eventTapped(event) {
+		let { onPressEvent } = this.props.items[Number(event.id)].agenda;
+		onPressEvent()
+	}
 	  
+	onLayout(event) {
+		const {x, y, height, width} = event.nativeEvent.layout;
+		this.setState({
+			height: height
+		})
+		console.log(height)
+	}
 	  render() {
+		const appStyle = {...defaultStyle};
 		// calendar
 		let { items, language, mondayBegin, colors, navigation } = this.props;
 		LocaleConfig.defaultLocale = language;
@@ -205,6 +221,10 @@ class DynamicCalendar extends Component {
 		}
 		let yearValue = this.state.chosenDay.substring(0,this.state.chosenDay.length-6);
 		let dayValue = this.state.chosenDay.substring(this.state.chosenDay.length-2,this.state.chosenDay.length);
+		let passedTitle = dayValue + " " + LocaleConfig.locales[language].monthNames[monthValue - 1] + " " + yearValue
+		if (language == 'Japanese' || language == 'Chinese' ){
+			passedTitle = yearValue + " " + LocaleConfig.locales[language].monthNames[monthValue - 1] + " " + dayValue
+		}
 		// colors
 		let { activeColor, textColor, disabledColor, bgColor, headingTextColor } = colors;
 		// navigation
@@ -235,14 +255,11 @@ class DynamicCalendar extends Component {
 		let eventBgColorPass = "#ffffff"
 		let eventTextColorPass = "#000000"
 		let agendaRenderPass = false
-		let onPressEventPass = () => {}
-		let agendaEvents = []
-		if(items != undefined && items != null){
-			let { eventBgColor, eventTextColor, agendaRender, onPressEvent } = items[0].agenda;
-			onPressEventPass = onPressEvent
+		this.state.agendaEvents = []
+		if(items != undefined){
+			let { eventBgColor, eventTextColor } = items[0].agenda;
 			eventBgColorPass = eventBgColor
 			eventTextColorPass = eventTextColor
-			agendaRenderPass = agendaRender
 			let eventTitleArray = []
 			let eventSubtitleArray = []
 			let eventStarttimeArray = []
@@ -257,23 +274,23 @@ class DynamicCalendar extends Component {
 				let endTime = new Date(eventEndtimeArray[i]).getFullYear() + "-" + (new Date(eventEndtimeArray[i]).getMonth()+1) + '-' + new Date(eventEndtimeArray[i]).getDate()
 				if(startTime == endTime){
 					if(this.formatDate(new Date(eventStarttimeArray[i]), true) != this.formatDate(new Date(eventEndtimeArray[i]), true)){
-						this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(eventStarttimeArray[i]), true), this.formatDate(new Date(eventEndtimeArray[i]), true), eventTitleArray[i], eventSubtitleArray[i])
+						this.pushAgendaEvents(this.state.agendaEvents, i, this.formatDate(new Date(eventStarttimeArray[i]), true), this.formatDate(new Date(eventEndtimeArray[i]), true), eventTitleArray[i], eventSubtitleArray[i])
 						markedDatesArray.push(this.formatDate(new Date(eventStarttimeArray[i]), false))
 					}
 				}
 				else{
 					if(this.formatDate(new Date(eventStarttimeArray[i]), false) + " 23:59" != this.formatDate(new Date(eventStarttimeArray[i]), true)){
-						this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(eventStarttimeArray[i]), true), this.formatDate(new Date(eventStarttimeArray[i]), false) + " 23:59", eventTitleArray[i], eventSubtitleArray[i])
+						this.pushAgendaEvents(this.state.agendaEvents, i, this.formatDate(new Date(eventStarttimeArray[i]), true), this.formatDate(new Date(eventStarttimeArray[i]), false) + " 23:59", eventTitleArray[i], eventSubtitleArray[i])
 						markedDatesArray.push(this.formatDate(new Date(eventStarttimeArray[i]), false))
 					}
 					let dates = this.getDates(new Date(startTime),new Date(endTime));   
 					for(let j = 1; j < dates.length - 1; ++j){
 						let datePush = this.formatDate(new Date(dates[j]), false)
-						this.pushAgendaEvents(agendaEvents, datePush + ' 00:00', datePush + ' 23:59', eventTitleArray[i], eventSubtitleArray[i])
+						this.pushAgendaEvents(this.state.agendaEvents, i, datePush + ' 00:00', datePush + ' 23:59', eventTitleArray[i], eventSubtitleArray[i])
 						markedDatesArray.push(datePush)
 					}
 					if(this.formatDate(new Date(eventEndtimeArray[i]), false) + " 00:00" != this.formatDate(new Date(eventEndtimeArray[i]), true)){
-						this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(eventEndtimeArray[i]), false) + " 00:00", this.formatDate(new Date(eventEndtimeArray[i]), true), eventTitleArray[i], eventSubtitleArray[i])
+						this.pushAgendaEvents(this.state.agendaEvents, i, this.formatDate(new Date(eventEndtimeArray[i]), false) + " 00:00", this.formatDate(new Date(eventEndtimeArray[i]), true), eventTitleArray[i], eventSubtitleArray[i])
 						markedDatesArray.push(this.formatDate(new Date(eventEndtimeArray[i]), false))
 					}
 				}
@@ -281,9 +298,12 @@ class DynamicCalendar extends Component {
 			if(items[0].agenda.eventStarttime == undefined){
 				let passDate = new Date(this.state.chosenDay);
 				passDate.setDate(passDate.getDate() + 1);
-				this.pushAgendaEvents(agendaEvents, this.formatDate(new Date(passDate), false) + " 00:00", this.formatDate(new Date(passDate), false) + " 23:59", "Example Title", "Example Subtitle")
+				this.pushAgendaEvents(this.state.agendaEvents, 0, this.formatDate(new Date(passDate), false) + " 00:15", this.formatDate(new Date(passDate), false) + " 5:15", "Example Title", "Example Subtitle")
+				if (items[0].agenda.agendaRender){
+					agendaRenderPass = true;
+				}
 			}
-			let datesHash = new Map()
+			this.state.datesHash = new Map()
 			for(let i = 0; i < markedDatesArray.length; ++i){
 				let count = 0
 				for(let j = 0; j < markedDatesArray.length; ++j){
@@ -291,8 +311,7 @@ class DynamicCalendar extends Component {
 						count++;
 					}
 				}
-				datesHash.set(markedDatesArray[i], count)
-				this.state.datesHash2.set(markedDatesArray[i], count)
+				this.state.datesHash.set(markedDatesArray[i], count)
 			}
 			if(markingStyle == 'multi-dot'){
 				markedDatesArray.forEach((day) => {
@@ -301,7 +320,7 @@ class DynamicCalendar extends Component {
 						selected = true
 					}
 					calAgendaObject[day] = {
-					dots: this.multiDotRender(datesHash.get(day), activeColor),
+					dots: this.multiDotRender(this.state.datesHash.get(day), activeColor),
 					selected: selected
 				};
 				});
@@ -321,18 +340,9 @@ class DynamicCalendar extends Component {
 		}
 		if((agendaRenderPass && !this.state.calendarRender) || (!agendaRenderPass && this.state.calendarRender)){
 			return (
-				<div id="foo">
-				<View style={{ flex: 1, marginTop: 20 }}>
+				<div id="foo" >
+				<View onLayout={(event) => this.onLayout(event)}  style={{ flex: 1, marginTop: 20}}>
 					<Calendar
-						firstDay={mondayBegin}
-						onDayPress={this.onDayPress}
-						minDate = {minDate}
-						maxDate = {maxDate}
-						current = {startDate}
-						hideArrows={!changeMonths}
-						renderArrow={(direction) => direction === 'left' ? <FontAwesomeIcon icon={faChevronLeft} color={activeColor}/> : <FontAwesomeIcon icon={faChevronRight} color={activeColor}/>}
-						markedDates={calAgendaObject}
-						markingType={markingStyle}
 						theme={{
 							calendarBackground: bgColor,
 							textSectionTitleColor: textColor,
@@ -349,8 +359,39 @@ class DynamicCalendar extends Component {
 							textDayHeaderFontWeight: '300',
 							textDayFontSize: 16,
 							textMonthFontSize: 16,
-							textDayHeaderFontSize: 16
-						}}
+							textDayHeaderFontSize: 16,
+							'stylesheet.calendar.header': {
+								dayHeader: {
+									marginTop: 2,
+									marginBottom: 7,
+									width: 50,
+									textAlign: 'center',
+									fontSize: appStyle.textDayHeaderFontSize,
+									fontWeight: 'bold',
+									color: textColor
+								},
+							},
+							'stylesheet.day.basic':{
+								base:{
+									height: 32,
+									textAlign: 'center'
+								}
+							},
+							'stylesheet.day.multiDot':{
+								base:{
+									height: 32
+								}
+							}
+						}}					
+						firstDay={mondayBegin}
+						onDayPress={this.onDayPress}
+						minDate = {minDate}
+						maxDate = {maxDate}
+						current = {startDate}
+						hideArrows={!changeMonths}
+						renderArrow={(direction) => direction === 'left' ? <FontAwesomeIcon icon={faChevronLeft} color={activeColor}/> : <FontAwesomeIcon icon={faChevronRight} color={activeColor}/>}
+						markedDates={calAgendaObject}
+						markingType={markingStyle}	
 					/>
 				</View>
 				</div>
@@ -359,10 +400,10 @@ class DynamicCalendar extends Component {
 		else{
 			return (
 				<View style={{ flex: 1, marginTop: 20 }}>
-				  <EventCalendar {...this.props} title={dayValue + " " + LocaleConfig.locales[language].monthNames[monthValue - 1] + " " + yearValue} headerColor={bgColor} headerTextColor={headingTextColor} eventBgColor={eventBgColorPass} eventTextColor={eventTextColorPass}
-					eventTapped={onPressEventPass}
+				  <EventCalendar {...this.props} title={passedTitle} headerColor={bgColor} headerTextColor={headingTextColor} eventBgColor={eventBgColorPass} eventTextColor={eventTextColorPass}
+					eventTapped={this._eventTapped.bind(this)}
 					backButton={this.goBack.bind(this)}
-					events={agendaEvents}
+					events={this.state.agendaEvents}
 					width={this.state.realWidth}
 					initDate={this.state.chosenDay}
 					scrollToFirst
@@ -374,74 +415,3 @@ class DynamicCalendar extends Component {
 	}
 
 export default DynamicCalendar
-
-
-// let overlapArray = []
-// for(let i = 0; i < markedDatesArray.length; ++i){
-// 	if (datesHash.get(markedDatesArray[i]) > 1){
-// 		overlapArray.push(markedDatesArray[i])
-// 	}
-// }
-// let overlapMarkedArray = []
-// let overlapHash = new Map()
-// for(let i = 0; i < periodHash.size; ++i){
-// 	let count = 0
-// 	for(let j = 0; j < periodHash.get(i).length; ++j){
-// 		for(let k = 0; k < overlapArray.length; ++k){
-// 			if(overlapArray[k] == periodHash.get(i)[j]){
-// 				count++
-// 			}
-// 		}
-// 	}
-// 	if(count != 0){
-// 		overlapHash.set(overlapHash.size, periodHash.get(i))
-// 		periodHash.get(i).forEach((day) => {
-// 			overlapMarkedArray.push(day)
-// 		});
-// 	}
-// }
-// let finalHash = new Map()
-// 				for(let i = 0; i < periodHash.size; ++i){
-// 					let startingDayTrue = {startingDay: true, endingDay: false, color: activeColor};
-// 					let endingDayTrue = {startingDay: false, endingDay: true, color: activeColor};
-// 					let neitherTrue = {startingDay: false, endingDay: false, color: activeColor};
-// 					let datesArray = periodHash.get(i)
-// 					if (datesArray.length == 1){
-// 						this.insertHash(datesArray[0], finalHash, {startingDay: true, endingDay: true, color: activeColor})
-// 					}
-// 					else{
-// 						this.insertHash(datesArray[0], finalHash, startingDayTrue)
-// 						for(let j = 1; j < datesArray.length-1; ++j){
-// 							this.insertHash(datesArray[j], finalHash, neitherTrue)
-// 						}
-// 						this.insertHash(datesArray[datesArray.length-1], finalHash, endingDayTrue)
-// 					}
-// 					let maxSize = 0
-// 					for (let j = 0; j < overlapHash.size; ++j){
-// 						for (let k = 0; k < overlapHash.get(j).length; ++k){
-// 							if (finalHash.get(overlapHash.get(j)[k]) != undefined){
-// 								if (finalHash.get(overlapHash.get(j)[k]).length > maxSize){
-// 									maxSize = finalHash.get(overlapHash.get(j)[k]).length
-// 								}
-// 							}
-// 						}
-// 						for (let k = 0; k < overlapHash.get(j).length; ++k){
-// 							if (finalHash.get(overlapHash.get(j)[k]) != undefined){
-// 								while (finalHash.get(overlapHash.get(j)[k]).length != maxSize){
-// 									let tempArray = finalHash.get(overlapHash.get(j)[k])
-// 									tempArray.push({color: 'transparent'})
-// 									finalHash.set(overlapHash.get(j)[k], tempArray);
-// 								}
-// 							}
-// 							else{
-// 								let tempArray = []
-// 								tempArray.push({color: 'transparent'})
-// 								finalHash.set(overlapHash.get(j)[k], tempArray);
-// 								while (finalHash.get(overlapHash.get(j)[k]).length != maxSize){
-// 									tempArray = finalHash.get(overlapHash.get(j)[k])
-// 									tempArray.push({color: 'transparent'})
-// 									finalHash.set(finalHash.get(overlapHash.get(j)[k]), tempArray);
-// 								}
-// 							}
-// 						}
-// 					}
