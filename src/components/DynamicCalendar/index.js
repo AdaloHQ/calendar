@@ -88,14 +88,13 @@ class DynamicCalendar extends Component {
 			goBackTrigger: false,
 			datesHash: new Map(),
 			agendaEvents: [],
-			height: 32,
+			height: 32
 		};
 	  }
-	  
+	
 	  // runs when user clicks calendar day
 	  onDayPress = (day) => {	
 		this.setState({chosenDay: day.dateString});
-		this.setState({realWidth: document.getElementById('foo').getBoundingClientRect().width});
 		let { oneEventAction } = this.props
 		if(oneEventAction == 'action' && this.state.datesHash.get(day.dateString) == 1){
 			this.setState({goBackTrigger: true});
@@ -204,12 +203,15 @@ class DynamicCalendar extends Component {
 	}
 	  
 	onLayout(event) {
-		const {x, y, height, width} = event.nativeEvent.layout;
+		const { height, width} = event.nativeEvent.layout;
 		this.setState({
-			height: height
+			height: height,
+			realWidth: width
 		})
-		console.log(height)
+		// console.log('width: ' + width)
+		// console.log('height: ' + height)
 	}
+
 	  render() {
 		const appStyle = {...defaultStyle};
 		// calendar
@@ -340,11 +342,10 @@ class DynamicCalendar extends Component {
 		}
 		if((agendaRenderPass && !this.state.calendarRender) || (!agendaRenderPass && this.state.calendarRender)){
 			return (
-				<div id="foo" >
 				<View onLayout={(event) => this.onLayout(event)}  style={{ flex: 1, marginTop: 20}}>
 					<Calendar
-						theme={{
-							calendarBackground: bgColor,
+						key={activeColor + textColor + disabledColor + bgColor + headingTextColor} 
+						theme={{calendarBackground: bgColor,
 							textSectionTitleColor: textColor,
 							selectedDayBackgroundColor: bgColor,
 							selectedDayTextColor: activeColor,
@@ -381,8 +382,8 @@ class DynamicCalendar extends Component {
 								base:{
 									height: 32
 								}
-							}
-						}}					
+							}}
+						}	
 						firstDay={mondayBegin}
 						onDayPress={this.onDayPress}
 						minDate = {minDate}
@@ -394,13 +395,13 @@ class DynamicCalendar extends Component {
 						markingType={markingStyle}	
 					/>
 				</View>
-				</div>
 			);
 		}
 		else{
 			return (
 				<View style={{ flex: 1, marginTop: 20 }}>
 				  <EventCalendar {...this.props} title={passedTitle} headerColor={bgColor} headerTextColor={headingTextColor} eventBgColor={eventBgColorPass} eventTextColor={eventTextColorPass}
+				  	key = {bgColor + headingTextColor + eventBgColorPass + eventTextColorPass}
 					eventTapped={this._eventTapped.bind(this)}
 					backButton={this.goBack.bind(this)}
 					events={this.state.agendaEvents}

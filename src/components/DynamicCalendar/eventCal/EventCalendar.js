@@ -17,7 +17,7 @@ import {
   export default class EventCalendar extends React.Component {
     constructor(props) {
       super(props);
-      const {title, headerColor, headerTextColor, eventBgColor, eventTextColor } = props;
+      const { headerColor, headerTextColor, eventBgColor, eventTextColor } = props;
       const start = props.start ? props.start : 0;
       const end = props.end ? props.end : 24;
   
@@ -83,18 +83,12 @@ import {
     ) : (
         <Image tintColor='red' source={require('./back.png')}  style={this.styles.arrow} />
     );
-
-  
-      let headerText = upperCaseHeader
-          ? date.format(formatHeader || 'DD MMMM YYYY').toUpperCase()
-          : date.format(formatHeader || 'DD MMMM YYYY');
   
       return (
         <View style={[this.styles.container, { width }]}>
           <View style={this.styles.header}>
             <TouchableOpacity
                 style={this.styles.arrowButton}
-                // onPress={this._previous}
                 onPress={() =>
                   this._onBackButton()
                 }
@@ -106,7 +100,6 @@ import {
             </View>
             <TouchableOpacity
                 style={this.styles.arrowButton}
-                // onPress={this._next}
             >
             </TouchableOpacity>
           </View>
@@ -153,29 +146,6 @@ import {
     _onBackButton() {
       this.props.backButton();
     }
-  
-    // _previous = () => {
-    //   this._goToPage(this.state.index - 1);
-    //   if (this.props.dateChanged) {
-    //     this.props.dateChanged(
-    //       moment(this.props.initDate)
-    //         .add(this.state.index - 1 - this.props.size, 'days')
-    //         .format('YYYY-MM-DD')
-    //     );
-    //   }
-    // };
-  
-  
-    // _next = () => {
-    //   this._goToPage(this.state.index + 1);
-    //   if (this.props.dateChanged) {
-    //     this.props.dateChanged(
-    //       moment(this.props.initDate)
-    //         .add(this.state.index + 1 - this.props.size, 'days')
-    //         .format('YYYY-MM-DD')
-    //     );
-    //   }
-    // };
   
     render() {
       const {
