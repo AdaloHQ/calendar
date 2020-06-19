@@ -8,6 +8,7 @@ import {LocaleConfig} from 'react-native-calendars';
 import * as moment from 'moment';
 import * as defaultStyle from './defaultStyles';
 
+// construct language options
 LocaleConfig.locales['Arabic'] = {
 	monthNames: ['يناير'	, 'فبراير' , 'مارس' , 'أبريل' , 'مايو' , 'يونيه' , 'يوليه' , 'أغسطس' , 'سبتمبر' , 'أكتوبر' , 'نوفمبر' , 'ديسمبر'],
 	monthNamesShort: ['يناير'	, 'فبراير' , 'مارس' , 'أبريل' , 'مايو' , 'يونيه' , 'يوليه' , 'أغسطس' , 'سبتمبر' , 'أكتوبر' , 'نوفمبر' , 'ديسمبر'],
@@ -76,11 +77,6 @@ class DynamicCalendar extends Component {
 	
 	constructor(props) {
 		super(props);
-		this.multiDotRender.bind(this)
-		this.getDates.bind(this)
-		this.formatDate.bind(this)
-		this.pushAgendaEvents.bind(this)
-		this.onLayout.bind(this)
 		this.state = {
 			calendarRender: true,
 			chosenDay:  moment().format("YYYY-MM-DD"),
@@ -115,23 +111,23 @@ class DynamicCalendar extends Component {
 	  }
 
 	  // runs when user clicks back button on agenda 
-	  goBack() {
+	  goBack = () => {
 		this.setState({calendarRender: !this.state.calendarRender});
 		this.setState({goBackTrigger: true});
 	  }
 
 	  // renders multi-dot markings on calendar
-	  multiDotRender(number, activeColor){
-		  let markerDots = {color: activeColor};
-		  let multiDotArray = [markerDots]
-		  for (let i = 0; i < number-1; ++i){
-			multiDotArray.push(markerDots)
-		  }
-		  return multiDotArray
+	  multiDotRender = (number, activeColor) => {
+		let markerDots = {color: activeColor};
+		let multiDotArray = [markerDots]
+		for (let i = 0; i < number-1; ++i){
+		  multiDotArray.push(markerDots)
+		}
+		return multiDotArray
 	  }
 	  
 	  // returns an array of all dates between the two inputs
-	  getDates(startDate, endDate) {
+	  getDates = (startDate, endDate) => {
 		let dates = [],
 		currentDate = startDate,
 		addDays = function(days) {
@@ -152,7 +148,7 @@ class DynamicCalendar extends Component {
 	  }
 
 	// formats date with optional time 
-	formatDate(date, wantTime){
+	formatDate = (date, wantTime) => {
 		let datePush = date.getFullYear() + "-"
 		if(date.getMonth()+1 > 9){ 
 			datePush += (date.getMonth()+1) 
@@ -184,7 +180,7 @@ class DynamicCalendar extends Component {
 	}
 
 	// pushes event details onto agenda events array
-	pushAgendaEvents(agendaEvents, i, start, end, title, subtitle){
+	pushAgendaEvents = (agendaEvents, i, start, end, title, subtitle) => {
 		agendaEvents.push(
 			{ 
 				id: i,
@@ -197,19 +193,20 @@ class DynamicCalendar extends Component {
 	}
 
 	// runs when user taps an event
-	_eventTapped(event) {
+	eventTapped = (event) => {
 		let { onPressEvent } = this.props.items[Number(event.id)].agenda;
 		onPressEvent()
 	}
-	  
-	onLayout(event) {
+	
+	// fires when user edits size
+	onLayout = (event) => {
 		const { height, width} = event.nativeEvent.layout;
 		this.setState({
 			height: height,
 			realWidth: width
 		})
-		// console.log('width: ' + width)
-		// console.log('height: ' + height)
+		console.log('width: ' + width)
+		console.log('height: ' + height)
 	}
 
 	  render() {
@@ -375,12 +372,14 @@ class DynamicCalendar extends Component {
 							'stylesheet.day.basic':{
 								base:{
 									height: 32,
+									alignItems: 'center',
 									textAlign: 'center'
 								}
 							},
 							'stylesheet.day.multiDot':{
 								base:{
-									height: 32
+									height: 32,
+									alignItems: 'center'
 								}
 							}}
 						}	
@@ -397,21 +396,19 @@ class DynamicCalendar extends Component {
 				</View>
 			);
 		}
-		else{
-			return (
-				<View style={{ flex: 1, marginTop: 20 }}>
-				  <EventCalendar {...this.props} title={passedTitle} headerColor={bgColor} headerTextColor={headingTextColor} eventBgColor={eventBgColorPass} eventTextColor={eventTextColorPass}
-				  	key = {bgColor + headingTextColor + eventBgColorPass + eventTextColorPass}
-					eventTapped={this._eventTapped.bind(this)}
-					backButton={this.goBack.bind(this)}
-					events={this.state.agendaEvents}
-					width={this.state.realWidth}
-					initDate={this.state.chosenDay}
-					scrollToFirst
-				  />
-				</View>
-			  );
-		}
+		return (
+			<View style={{ flex: 1, marginTop: 20 }}>
+				<EventCalendar {...this.props} title={passedTitle} headerColor={bgColor} headerTextColor={headingTextColor} eventBgColor={eventBgColorPass} eventTextColor={eventTextColorPass}
+				key = {bgColor + headingTextColor + eventBgColorPass + eventTextColorPass}
+				eventTapped={this.eventTapped}
+				backButton={this.goBack}
+				events={this.state.agendaEvents}
+				width={this.state.realWidth}
+				initDate={this.state.chosenDay}
+				scrollToFirst
+				/>
+			</View>
+			);
 	  }
 	}
 
