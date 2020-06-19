@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import EventCalendar from './eventCal/EventCalendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
