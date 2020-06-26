@@ -1,5 +1,6 @@
 {
   "displayName": "Calendar",
+  "icon": "./icon.png",
   "defaultWidth": 400,
   "defaultHeight": 350,
   "resizeY": true,

@@ -14,7 +14,6 @@ LocaleConfig.locales['Arabic'] = {
 	monthNamesShort: ['يناير'	, 'فبراير' , 'مارس' , 'أبريل' , 'مايو' , 'يونيه' , 'يوليه' , 'أغسطس' , 'سبتمبر' , 'أكتوبر' , 'نوفمبر' , 'ديسمبر'],
     dayNames: ['الاحد', 'الاثنين', 'الثلاثاء', 'الاربعاء', 'الاربعاء', 'الجمعة', 'السبت'],
 	dayNamesShort: ['الاحد', 'الاثنين', 'الثلاثاء', 'الاربعاء', 'الاربعاء', 'الجمعة', 'السبت'],
-	
 };
 
 LocaleConfig.locales['Chinese'] = {
@@ -205,8 +204,8 @@ class DynamicCalendar extends Component {
 			height: height,
 			realWidth: width
 		})
-		console.log('width: ' + width)
-		console.log('height: ' + height)
+		// console.log('width: ' + width)
+		// console.log('height: ' + height)
 	}
 
 	  render() {
@@ -371,14 +370,14 @@ class DynamicCalendar extends Component {
 							},
 							'stylesheet.day.basic':{
 								base:{
-									height: 32,
+									// height: 32,
 									alignItems: 'center',
 									textAlign: 'center'
 								}
 							},
 							'stylesheet.day.multiDot':{
 								base:{
-									height: 32,
+									// height: 32,
 									alignItems: 'center'
 								}
 							}}
