@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "license": "MIT",
   "author": "Adalo",
+  "description": "Display a list of events on a calendar.  Also includes option for an agenda view.",
   "main": "index.js",
   "scripts": {
     "start": "adalo dev",
     "build": "adalo build",
     "login": "adalo login",
-    "publish": "adalo publish",
     "start:local": "ADALO_DEV_SERVER=http://localhost:3035 yarn start",
-    "login:local": "ADALO_BACKEND_SERVER=http://localhost:8084 yarn run login"
+    "login:local": "ADALO_BACKEND_SERVER=http://localhost:8084 yarn run login",
+    "deploy": "adalo deploy",
+    "deploy:local": "REGISTRY_URL=http://localhost:8000 yarn run deploy",
+    "publish": " adalo publish",
+    "publish:local": "REGISTRY_URL=http://localhost:8000 yarn run publish"
   },
   "peerDependencies": {
     "react": ">=16",
@@ -18,6 +22,7 @@
     "react-native": "*"
   },
   "adalo": {
+    "logo": "./logo.png",
     "displayName": "Calendar",
     "components": [
       {
