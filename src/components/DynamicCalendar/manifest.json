@@ -12,27 +12,6 @@
       "type": "list"
     },
     {
-      "name": "oneEventAction",
-      "displayName": "Clicking days with only one event should...",
-      "type": "text",
-      "default": "agenda",
-      "control": {
-        "type": "menu",
-        "options": [
-          { "label": "Run an Action", "value": "action" },
-          { "label": "Open the Agenda View", "value": "agenda" }
-        ]
-      }
-    },
-    {
-      "name": "onPressCalendar",
-      "displayName": "Click Actions",
-      "type": "action",
-      "role": "listItem",
-      "reference": "items",
-      "enabled": { "oneEventAction": "action" }
-    },
-    {
       "name": "language",
       "displayName": "Language",
       "type": "text",
@@ -56,7 +35,7 @@
       "name": "mondayBegin",
       "displayName": "Begin on What Day?",
       "type": "number",
-      "default": 1,
+      "default": 0,
       "control": {
         "type": "menu",
         "options": [
@@ -64,11 +43,46 @@
           { "label": "Monday", "value": 1 }
         ]
       }
+    },
+    {
+      "name": "eventStarttime",
+      "displayName": "Event Start",
+      "role": "listItem",
+      "reference": "items",
+      "type": "date"
+    },
+    {
+      "name": "eventEndtime",
+      "displayName": "Event End",
+      "role": "listItem",
+      "reference": "items",
+      "type": "date"
+    },
+    {
+      "name": "oneEventAction",
+      "displayName": "Clicking days with only one event should...",
+      "type": "text",
+      "default": "action",
+      "control": {
+        "type": "menu",
+        "options": [
+          { "label": "Run an Action", "value": "action" },
+          { "label": "Open the Agenda View", "value": "agenda" }
+        ]
+      }
+    },
+    {
+      "name": "onPressCalendar",
+      "displayName": "Click Actions",
+      "type": "action",
+      "role": "listItem",
+      "reference": "items",
+      "enabled": { "oneEventAction": "action" }
     }
   ],
   "childComponents": [
-	  {
-      "name": "colors", 
+    {
+      "name": "colors",
       "displayName": "Colors",
       "props": [
         {
@@ -81,13 +95,13 @@
           "name": "textColor",
           "displayName": "Text Color",
           "type": "color",
-          "default": "#2d4150"
+          "default": "#424242"
         },
         {
           "name": "disabledColor",
           "displayName": "Disabled Text Color",
           "type": "color",
-          "default": "#d9e1e8"
+          "default": "#CCCCCC"
         },
         {
           "name": "bgColor",
@@ -101,7 +115,7 @@
           "type": "color",
           "default": "#000000"
         }
-    ]
+      ]
     },
     {
       "name": "navigation",
@@ -146,14 +160,14 @@
             ]
           }
         }
-	  ]
+      ]
     },
     {
       "name": "agenda",
       "displayName": "Agenda View",
       "role": "listItem",
       "reference": "items",
-      "props": [ 
+      "props": [
         {
           "name": "agendaRender",
           "displayName": "Show Preview of Agenda View",
@@ -181,21 +195,6 @@
           "name": "eventSubtitle",
           "displayName": "Event Subtitles",
           "type": "text"
-        },
-        {
-
-          "name": "eventStarttime",
-          "displayName": "Event Start Dates & Times",
-          "role": "listItem",
-          "reference": "items",
-          "type": "date"
-        },
-        {
-          "name": "eventEndtime",
-          "displayName": "Event End Dates & Times",
-          "role": "listItem",
-          "reference": "items",
-          "type": "date"
         },
         {
           "name": "onPressEvent",

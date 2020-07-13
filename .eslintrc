@@ -1,0 +1,64 @@
+{
+  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "env": {
+    "commonjs": true,
+    "jest": true,
+    "node": true
+  },
+  "rules": {
+    "semi": ["error", "never"],
+    "lines-between-class-members": [
+      "error",
+      "always",
+      {
+        "exceptAfterSingleLine": true
+      }
+    ],
+    "max-len": [
+      "warn",
+      {
+        "code": 80,
+        "tabWidth": 2,
+        "comments": 80,
+        "ignoreComments": false,
+        "ignoreStrings": true
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "none",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "curly": ["error", "multi-line"],
+    "no-cond-assign": "off",
+    "prefer-const": "off",
+    "no-shadow": "off",
+    "no-console": ["error", {"allow": ["warn", "error", "info"]}],
+    "no-use-before-define": "off",
+    "no-param-reassign": "off",
+    "no-useless-escape": "off",
+    "no-restricted-syntax": "off",
+    "no-else-return": "off",
+    "prefer-destructuring": "off",
+    "spaced-comment": "off",
+    "consistent-return": "off",
+    "default-case": "off",
+    "no-return-assign": "off",
+    "no-continue": "off",
+    "radix": "off",
+    "no-loop-func": "off",
+    "array-callback-return": "off",
+    "no-throw-literal": "off",
+    "operator-assignment": "off",
+    "no-return-await": "off",
+    "no-underscore-dangle": "off",
+    "no-lonely-if": "off",
+    "no-await-in-loop": "off",
+    "no-nested-ternary": "off",
+    "guard-for-in": "off",
+    "class-methods-use-this": "off"
+  }
+}
