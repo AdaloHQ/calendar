@@ -535,6 +535,7 @@ class DynamicCalendar extends Component {
     const appStyle = { ...defaultStyle }
     // calendar
     let { items, language, mondayBegin, colors, navigation } = this.props
+    const mondayBeginBool = mondayBegin == 'Sunday' ? 0 : 1
     LocaleConfig.defaultLocale = language
     let monthValue = this.state.chosenDay.substring(
       this.state.chosenDay.length - 5,
@@ -810,7 +811,7 @@ class DynamicCalendar extends Component {
                 },
               },
             }}
-            firstDay={mondayBegin}
+            firstDay={mondayBeginBool}
             onDayPress={this.onDayPress}
             minDate={minDate}
             maxDate={maxDate}

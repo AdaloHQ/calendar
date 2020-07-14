@@ -33,14 +33,14 @@
     },
     {
       "name": "mondayBegin",
-      "displayName": "Begin on What Day?",
-      "type": "number",
-      "default": 0,
+      "displayName": "First Day of the Week",
+      "type": "text",
+      "default": "Sunday",
       "control": {
         "type": "menu",
         "options": [
-          { "label": "Sunday", "value": 0 },
-          { "label": "Monday", "value": 1 }
+          { "label": "Sunday", "value": "Sunday" },
+          { "label": "Monday", "value": "Monday" }
         ]
       }
     },
