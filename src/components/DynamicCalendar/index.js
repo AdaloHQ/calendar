@@ -403,12 +403,12 @@ class DynamicCalendar extends Component {
     this.state = {
       calendarRender: true,
       chosenDay: moment().format('YYYY-MM-DD'),
-      realWidth: 375,
       goBackTrigger: false,
       datesHash: new Map(),
       agendaEvents: []
     }
   }
+  
   // runs when user clicks calendar day
   onDayPress = (day) => {
     this.setState({ chosenDay: day.dateString })
@@ -832,7 +832,7 @@ class DynamicCalendar extends Component {
           eventTapped={this.eventTapped}
           backButton={this.goBack}
           events={this.state.agendaEvents}
-          width={this.state.realWidth}
+          width={this.props._width}
           initDate={this.state.chosenDay}
           scrollToFirst
         />
