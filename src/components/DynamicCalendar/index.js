@@ -406,11 +406,9 @@ class DynamicCalendar extends Component {
       realWidth: 375,
       goBackTrigger: false,
       datesHash: new Map(),
-      agendaEvents: [],
-      height: 32,
+      agendaEvents: []
     }
   }
-
   // runs when user clicks calendar day
   onDayPress = (day) => {
     this.setState({ chosenDay: day.dateString })
@@ -518,17 +516,6 @@ class DynamicCalendar extends Component {
   eventTapped = (event) => {
     let { onPressEvent } = this.props.items[Number(event.id)].agenda
     onPressEvent()
-  }
-
-  // fires when user edits size
-  onLayout = (event) => {
-    const { height, width } = event.nativeEvent.layout
-    this.setState({
-      height: height,
-      realWidth: width,
-    })
-    // console.log('width: ' + width)
-    // console.log('height: ' + height)
   }
 
   render() {
@@ -758,7 +745,6 @@ class DynamicCalendar extends Component {
     ) {
       return (
         <View
-          onLayout={(event) => this.onLayout(event)}
           style={{ flex: 1, marginTop: 20 }}
         >
           <Calendar
@@ -767,7 +753,8 @@ class DynamicCalendar extends Component {
               textColor +
               disabledColor +
               bgColor +
-              headingTextColor
+              headingTextColor +
+              this.props._height
             }
             theme={{
               calendarBackground: bgColor,
@@ -799,14 +786,14 @@ class DynamicCalendar extends Component {
               },
               'stylesheet.day.basic': {
                 base: {
-                  // height: 32,
+                  height: (this.props._height/9),
                   alignItems: 'center',
                   textAlign: 'center',
                 },
               },
               'stylesheet.day.multiDot': {
                 base: {
-                  // height: 32,
+                  height: (this.props._height/9),
                   alignItems: 'center',
                 },
               },
