@@ -1,6 +1,6 @@
 {
   "name": "dynamic-calendar",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "author": "Adalo",
   "description": "Display a list of events on a calendar.  Also includes option for an agenda view.",
@@ -31,7 +31,7 @@
       }
     ],
     "iosInstallScript": "./scripts/remove-react-native-svg.sh",
-    "androidInsallScript": "./scripts/remove-react-native-svg.sh"
+    "androidInstallScript": "./scripts/remove-react-native-svg.sh"
   },
   "devDependencies": {
     "@adalo/cli": "^0.0.37",
