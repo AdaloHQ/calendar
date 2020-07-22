@@ -1,11 +1,17 @@
 // @flow
-import { Platform, StyleSheet } from 'react-native';
-import { faBold } from '@fortawesome/free-solid-svg-icons';
+import { Platform, StyleSheet } from 'react-native'
 
 // const eventPaddingLeft = 4
-const leftMargin = 50 - 1;
+const leftMargin = 50 - 1
 
-export default function styleConstructor(theme = {}, calendarHeight, headerColor, headerTextColor, eventBgColor, eventTextColor) {
+export default function styleConstructor(
+  theme = {},
+  calendarHeight,
+  headerColor,
+  headerTextColor,
+  eventBgColor,
+  eventTextColor
+) {
   let style = {
     container: {
       flex: 1,
@@ -111,6 +117,6 @@ export default function styleConstructor(theme = {}, calendarHeight, headerColor
       fontWeight: '500',
       ...theme.timeLabel,
     },
-  };
-  return StyleSheet.create(style);
+  }
+  return StyleSheet.create(style)
 }

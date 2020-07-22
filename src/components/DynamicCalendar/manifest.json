@@ -2,7 +2,7 @@
   "displayName": "Calendar",
   "icon": "./icon.png",
   "defaultWidth": 400,
-  "defaultHeight": 350,
+  "defaultHeight": 450,
   "resizeY": true,
   "components": "./index.js",
   "props": [
@@ -19,15 +19,42 @@
       "control": {
         "type": "menu",
         "options": [
-          { "label": "Arabic", "value": "Arabic" },
-          { "label": "Chinese", "value": "Chinese" },
-          { "label": "English", "value": "English" },
-          { "label": "French", "value": "French" },
-          { "label": "German", "value": "German" },
-          { "label": "Hindi", "value": "Hindi" },
-          { "label": "Japanese", "value": "Japanese" },
-          { "label": "Portuguese", "value": "Portuguese" },
-          { "label": "Spanish", "value": "Spanish" }
+          {
+            "label": "Arabic",
+            "value": "Arabic"
+          },
+          {
+            "label": "Chinese",
+            "value": "Chinese"
+          },
+          {
+            "label": "English",
+            "value": "English"
+          },
+          {
+            "label": "French",
+            "value": "French"
+          },
+          {
+            "label": "German",
+            "value": "German"
+          },
+          {
+            "label": "Hindi",
+            "value": "Hindi"
+          },
+          {
+            "label": "Japanese",
+            "value": "Japanese"
+          },
+          {
+            "label": "Portuguese",
+            "value": "Portuguese"
+          },
+          {
+            "label": "Spanish",
+            "value": "Spanish"
+          }
         ]
       }
     },
@@ -39,8 +66,14 @@
       "control": {
         "type": "menu",
         "options": [
-          { "label": "Sunday", "value": "Sunday" },
-          { "label": "Monday", "value": "Monday" }
+          {
+            "label": "Sunday",
+            "value": "Sunday"
+          },
+          {
+            "label": "Monday",
+            "value": "Monday"
+          }
         ]
       }
     },
@@ -66,8 +99,14 @@
       "control": {
         "type": "menu",
         "options": [
-          { "label": "Run an Action", "value": "action" },
-          { "label": "Open the Agenda View", "value": "agenda" }
+          {
+            "label": "Run an Action",
+            "value": "action"
+          },
+          {
+            "label": "Open the Agenda View",
+            "value": "agenda"
+          }
         ]
       }
     },
@@ -77,7 +116,9 @@
       "type": "action",
       "role": "listItem",
       "reference": "items",
-      "enabled": { "oneEventAction": "action" }
+      "enabled": {
+        "oneEventAction": "action"
+      }
     }
   ],
   "childComponents": [
@@ -155,8 +196,14 @@
           "control": {
             "type": "menu",
             "options": [
-              { "label": "Dots", "value": "multi-dot" },
-              { "label": "Bars", "value": "multi-period" }
+              {
+                "label": "Dots",
+                "value": "multi-dot"
+              },
+              {
+                "label": "Bars",
+                "value": "multi-period"
+              }
             ]
           }
         }

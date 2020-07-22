@@ -2,11 +2,7 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 import EventCalendar from './eventCal/EventCalendar'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import {
-  faChevronRight,
-  faChevronLeft,
-} from '@fortawesome/free-solid-svg-icons'
+import { IconToggle } from '@protonapp/react-native-material-ui'
 import { LocaleConfig } from 'react-native-calendars'
 import * as defaultStyle from './defaultStyles'
 import moment from 'moment'
@@ -405,10 +401,10 @@ class DynamicCalendar extends Component {
       chosenDay: moment().format('YYYY-MM-DD'),
       goBackTrigger: false,
       datesHash: new Map(),
-      agendaEvents: []
+      agendaEvents: [],
     }
   }
-  
+
   // runs when user clicks calendar day
   onDayPress = (day) => {
     this.setState({ chosenDay: day.dateString })
@@ -744,9 +740,7 @@ class DynamicCalendar extends Component {
       (!agendaRenderPass && this.state.calendarRender)
     ) {
       return (
-        <View
-          style={{ flex: 1, marginTop: 20 }}
-        >
+        <View style={{ flex: 1, marginTop: 20 }}>
           <Calendar
             key={
               activeColor +
@@ -786,14 +780,14 @@ class DynamicCalendar extends Component {
               },
               'stylesheet.day.basic': {
                 base: {
-                  height: (this.props._height/9),
+                  height: this.props._height / 9,
                   alignItems: 'center',
                   textAlign: 'center',
                 },
               },
               'stylesheet.day.multiDot': {
                 base: {
-                  height: (this.props._height/9),
+                  height: this.props._height / 9,
                   alignItems: 'center',
                 },
               },
@@ -806,11 +800,13 @@ class DynamicCalendar extends Component {
             hideArrows={!changeMonths}
             renderArrow={(direction) =>
               direction === 'left' ? (
-                <FontAwesomeIcon icon={faChevronLeft} color={activeColor} />
+                <IconToggle name="chevron-left" color={activeColor} />
               ) : (
-                <FontAwesomeIcon icon={faChevronRight} color={activeColor} />
+                <IconToggle name="chevron-right" color={activeColor} />
               )
             }
+            onPressArrowLeft={(subtractMonth) => subtractMonth()}
+            onPressArrowRight={(addMonth) => addMonth()}
             markedDates={calAgendaObject}
             markingType={markingStyle}
           />
