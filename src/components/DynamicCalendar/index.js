@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 import EventCalendar from './eventCal/EventCalendar'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {
   faChevronRight,
   faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import { LocaleConfig } from 'react-native-calendars'
-import * as moment from 'moment'
 import * as defaultStyle from './defaultStyles'
+import moment from 'moment'
 
 // construct language options
 LocaleConfig.locales['Arabic'] = {
