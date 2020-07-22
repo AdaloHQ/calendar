@@ -1,6 +1,6 @@
 {
   "name": "dynamic-calendar",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "author": "Adalo",
   "description": "Display a list of events on a calendar.  Also includes option for an agenda view.",
