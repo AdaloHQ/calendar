@@ -2,9 +2,13 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 import EventCalendar from './eventCal/EventCalendar'
-import { IconToggle } from '@protonapp/react-native-material-ui'
 import { LocaleConfig } from 'react-native-calendars'
 import * as defaultStyle from './defaultStyles'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import {
+  faChevronRight,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment'
 
 // construct language options
@@ -800,9 +804,9 @@ class DynamicCalendar extends Component {
             hideArrows={!changeMonths}
             renderArrow={(direction) =>
               direction === 'left' ? (
-                <IconToggle name="chevron-left" color={activeColor} />
+                <FontAwesomeIcon icon={faChevronLeft} color={activeColor} />
               ) : (
-                <IconToggle name="chevron-right" color={activeColor} />
+                <FontAwesomeIcon icon={faChevronRight} color={activeColor} />
               )
             }
             onPressArrowLeft={(subtractMonth) => subtractMonth()}

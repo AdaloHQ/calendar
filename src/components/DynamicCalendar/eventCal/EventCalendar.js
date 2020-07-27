@@ -14,6 +14,9 @@ import styleConstructor from './style'
 
 import DayView from './DayView'
 
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+
 export default class EventCalendar extends React.Component {
   constructor(props) {
     super(props)
@@ -88,11 +91,7 @@ export default class EventCalendar extends React.Component {
     const backIcon = this.props.headerBackIcon ? (
       this.props.headerBackIcon
     ) : (
-      <Image
-        tintColor="red"
-        source={require('./back.png')}
-        style={this.styles.arrow}
-      />
+      <FontAwesomeIcon icon={faChevronLeft} style={this.styles.arrow} />
     )
 
     return (
