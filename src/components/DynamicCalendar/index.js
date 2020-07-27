@@ -780,14 +780,14 @@ class DynamicCalendar extends Component {
               },
               'stylesheet.day.basic': {
                 base: {
-                  height: this.props._height / 9,
+                  height: this.props._height / 10,
                   alignItems: 'center',
                   textAlign: 'center',
                 },
               },
               'stylesheet.day.multiDot': {
                 base: {
-                  height: this.props._height / 9,
+                  height: this.props._height / 10,
                   alignItems: 'center',
                 },
               },
