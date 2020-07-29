@@ -515,13 +515,22 @@ class DynamicCalendar extends Component {
   // runs when user taps an event
   eventTapped = (event) => {
     let { onPressEvent } = this.props.items[Number(event.id)].agenda
-    onPressEvent()
+    if (onPressEvent) onPressEvent()
   }
 
   render() {
     const appStyle = { ...defaultStyle }
     // calendar
-    let { items, language, mondayBegin, colors, navigation } = this.props
+    let {
+      items,
+      language,
+      mondayBegin,
+      colors,
+      navigation,
+      editor,
+      markingStyle,
+    } = this.props
+    const timeFormat = this.props.items[0]?.agenda.timeFormat
     const mondayBeginBool = mondayBegin == 'Sunday' ? 0 : 1
     LocaleConfig.defaultLocale = language
     let monthValue = this.state.chosenDay.substring(
@@ -569,7 +578,7 @@ class DynamicCalendar extends Component {
       headingTextColor,
     } = colors
     // navigation
-    let { defDate, minDate, maxDate, changeMonths, markingStyle } = navigation
+    let { defDate, minDate, maxDate, changeMonths } = navigation
     let formats = [moment.ISO_8601, 'YYYY-MM-DD']
     let startDate = moment().format('YYYY-MM-DD')
 
@@ -592,7 +601,7 @@ class DynamicCalendar extends Component {
     let eventTextColorPass = '#000000'
     let agendaRenderPass = false
     this.state.agendaEvents = []
-    if (items != undefined) {
+    if (items != undefined && items[0] != undefined) {
       let { eventBgColor, eventTextColor } = items[0].agenda
       eventBgColorPass = eventBgColor
       eventTextColorPass = eventTextColor
@@ -696,9 +705,9 @@ class DynamicCalendar extends Component {
           'Example Title',
           'Example Subtitle'
         )
-        if (items[0].agenda.agendaRender) {
-          agendaRenderPass = true
-        }
+      }
+      if (items[0].agenda.agendaRender) {
+        agendaRenderPass = true
       }
       this.state.datesHash = new Map()
       for (let i = 0; i < markedDatesArray.length; ++i) {
@@ -739,10 +748,8 @@ class DynamicCalendar extends Component {
         })
       }
     }
-    if (
-      (agendaRenderPass && !this.state.calendarRender) ||
-      (!agendaRenderPass && this.state.calendarRender)
-    ) {
+
+    if (!(editor && agendaRenderPass) && this.state.calendarRender) {
       return (
         <View style={{ flex: 1, marginTop: 20 }}>
           <Calendar
@@ -835,6 +842,7 @@ class DynamicCalendar extends Component {
           width={this.props._width}
           initDate={this.state.chosenDay}
           scrollToFirst
+          format24h={timeFormat}
         />
       </View>
     )

@@ -92,10 +92,30 @@
       "type": "date"
     },
     {
+      "name": "markingStyle",
+      "displayName": "Multi-Day Event Marking Style",
+      "type": "text",
+      "default": "multi-dot",
+      "control": {
+        "type": "menu",
+        "options": [
+          {
+            "label": "Dots",
+            "value": "multi-dot"
+          },
+          {
+            "label": "Bars",
+            "value": "multi-period"
+          }
+        ]
+      }
+    },
+    {
       "name": "oneEventAction",
       "displayName": "Clicking days with only one event should...",
       "type": "text",
       "default": "action",
+      "helpText": "Clicking days with multiple events will always open agenda view.",
       "control": {
         "type": "menu",
         "options": [
@@ -187,25 +207,6 @@
           "displayName": "Allow Changing Months?",
           "type": "boolean",
           "default": true
-        },
-        {
-          "name": "markingStyle",
-          "displayName": "Multi-Day Event Marking Style",
-          "type": "text",
-          "default": "multi-dot",
-          "control": {
-            "type": "menu",
-            "options": [
-              {
-                "label": "Dots",
-                "value": "multi-dot"
-              },
-              {
-                "label": "Bars",
-                "value": "multi-period"
-              }
-            ]
-          }
         }
       ]
     },
@@ -222,16 +223,35 @@
           "default": false
         },
         {
+          "name": "timeFormat",
+          "displayName": "Time Format",
+          "type": "boolean",
+          "defaultValue": false,
+          "control": {
+            "type": "menu",
+            "options": [
+              {
+                "label": "12 Hour Time",
+                "value": false
+              },
+              {
+                "label": "24 Hour Time",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
           "name": "eventBgColor",
           "displayName": "Event Background Color",
           "type": "color",
-          "default": "#ffffff"
+          "default": "@primary"
         },
         {
           "name": "eventTextColor",
           "displayName": "Event Text Color",
           "type": "color",
-          "default": "#000000"
+          "default": "@contrast:eventBgColor"
         },
         {
           "name": "eventTitle",
