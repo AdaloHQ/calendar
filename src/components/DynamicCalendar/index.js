@@ -406,6 +406,16 @@ class DynamicCalendar extends Component {
       goBackTrigger: false,
       datesHash: new Map(),
       agendaEvents: [],
+      timeFormat: 0,
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.items || !prevProps.items) return
+    const { items } = this.props
+    const { items: prevItems } = prevProps
+    if (items[0].agenda.timeFormat !== prevItems[0].agenda.timeFormat) {
+      this.setState({ timeFormat: items[0].agenda.timeFormat })
     }
   }
 
@@ -530,7 +540,7 @@ class DynamicCalendar extends Component {
       editor,
       markingStyle,
     } = this.props
-    const timeFormat = this.props.items[0]?.agenda.timeFormat
+    const { timeFormat } = this.state
     const mondayBeginBool = mondayBegin == 'Sunday' ? 0 : 1
     LocaleConfig.defaultLocale = language
     let monthValue = this.state.chosenDay.substring(
