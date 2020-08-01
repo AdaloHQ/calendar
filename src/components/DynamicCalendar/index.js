@@ -525,7 +525,10 @@ class DynamicCalendar extends Component {
   // runs when user taps an event
   eventTapped = (event) => {
     let { onPressEvent } = this.props.items[Number(event.id)].agenda
-    if (onPressEvent) onPressEvent()
+    if (onPressEvent) {
+      onPressEvent()
+      setTimeout(() => this.setState({ calendarRender: true }), 1000)
+    }
   }
 
   render() {
