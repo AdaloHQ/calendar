@@ -414,7 +414,7 @@ class DynamicCalendar extends Component {
     if (!this.props.items || !prevProps.items) return
     const { items } = this.props
     const { items: prevItems } = prevProps
-    if (items[0].agenda.timeFormat !== prevItems[0].agenda.timeFormat) {
+    if (items[0]?.agenda.timeFormat !== prevItems[0]?.agenda.timeFormat) {
       this.setState({ timeFormat: items[0].agenda.timeFormat })
     }
   }
