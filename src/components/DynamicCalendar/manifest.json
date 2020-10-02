@@ -54,6 +54,10 @@
           {
             "label": "Spanish",
             "value": "Spanish"
+          },
+          {
+            "label": "Russian",
+            "value": "Russian"
           }
         ]
       }
