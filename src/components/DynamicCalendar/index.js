@@ -665,10 +665,10 @@ class DynamicCalendar extends Component {
       let eventEndtimeArray = []
       let markedDatesArray = []
       for (let i = 0; i < items.length; ++i) {
-        eventTitleArray.push(items[i]?.agenda.eventTitle)
-        eventSubtitleArray.push(items[i]?.agenda.eventSubtitle)
-        eventStarttimeArray.push(items[i]?.eventStarttime)
-        eventEndtimeArray.push(items[i]?.eventEndtime)
+        eventTitleArray.push(items[i].agenda.eventTitle)
+        eventSubtitleArray.push(items[i].agenda.eventSubtitle)
+        eventStarttimeArray.push(items[i].eventStarttime)
+        eventEndtimeArray.push(items[i].eventEndtime)
         let startTime =
           new Date(eventStarttimeArray[i]).getFullYear() +
           '-' +
@@ -760,7 +760,7 @@ class DynamicCalendar extends Component {
           'Example Subtitle'
         )
       }
-      if (items[0]?.agenda?.agendaRender) {
+      if (items[0].agenda.agendaRender) {
         agendaRenderPass = true
       }
       this.state.datesHash = new Map()
