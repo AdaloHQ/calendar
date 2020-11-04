@@ -157,6 +157,7 @@ export default class EventCalendar extends React.Component {
     return (
       <View style={[this.styles.container, { width }]}>
         <VirtualizedList
+          scrollEnabled={false}
           ref="calendar"
           windowSize={2}
           initialNumToRender={2}
