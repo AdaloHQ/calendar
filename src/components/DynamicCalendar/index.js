@@ -438,6 +438,47 @@ LocaleConfig.locales['Russian'] = {
   dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 }
 
+LocaleConfig.locales['Polish'] = {
+  monthNames: [
+    'Styczeń',
+    'Luty',
+    'Marzec',
+    'Kwiecień',
+    'Maj',
+    'Czerwiec',
+    'Lipiec',
+    'Sierpień',
+    'Wrzesień',
+    'Październik',
+    'Listopad',
+    'Grudzień',
+  ],
+  monthNamesShort: [
+    'stycz.',
+    'luty',
+    'mar.',
+    'kwiec.',
+    'maj',
+    'czerw.',
+    'lip.',
+    'sierp.',
+    'wrzes.',
+    'pazdz.',
+    'listop.',
+    'grudz.',
+  ],
+  dayNames: [
+    'Niedziela',
+    'Poniedziałek',
+    'Wtorek',
+    'Środa',
+    'Czwartek',
+    'Piątek',
+    'Sobota',
+  ],
+  dayNamesShort: ['niedz', 'pon', 'wto', 'śro', 'czw', 'piąt', 'sob'],
+}
+
 class DynamicCalendar extends Component {
   constructor(props) {
     super(props)

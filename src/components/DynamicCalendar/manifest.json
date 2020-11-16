@@ -58,6 +58,10 @@
           {
             "label": "Russian",
             "value": "Russian"
+          },
+          {
+            "label": "Polish",
+            "value": "Polish"
           }
         ]
       }
