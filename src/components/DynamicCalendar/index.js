@@ -521,8 +521,10 @@ class DynamicCalendar extends Component {
           id = this.state.agendaEvents[i].id
         }
       }
-      let { onPressCalendar } = this.props.items[Number(id)]
-      onPressCalendar()
+      if (this.props.items && this.props.items[Number(id)]) {
+        let { onPressCalendar } = this.props.items[Number(id)]
+        onPressCalendar()
+      }
     } else {
       this.setState({ calendarRender: !this.state.calendarRender })
     }
