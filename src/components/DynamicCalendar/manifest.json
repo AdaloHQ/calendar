@@ -256,20 +256,26 @@
           "default": "@primary"
         },
         {
-          "name": "eventTextColor",
-          "displayName": "Event Text Color",
-          "type": "color",
-          "default": "@contrast:eventBgColor"
-        },
-        {
           "name": "eventTitle",
           "displayName": "Event Titles",
-          "type": "text"
+          "type": "text",
+          "styles": {
+            "fontFamily": "@body",
+            "fontWeight": "normal",
+            "fontSize": "15",
+            "color": "@contrast:eventBgColor"
+          }
         },
         {
           "name": "eventSubtitle",
           "displayName": "Event Subtitles",
-          "type": "text"
+          "type": "text",
+          "styles": {
+            "fontFamily": "@body",
+            "fontWeight": "normal",
+            "fontSize": "12",
+            "color": "@contrast:eventBgColor"
+          }
         },
         {
           "name": "onPressEvent",

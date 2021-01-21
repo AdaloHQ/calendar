@@ -919,6 +919,15 @@ class DynamicCalendar extends Component {
         </View>
       )
     }
+    //custom font additions
+    let customFontStyles =
+      this.props.agenda && this.props.agenda.styles
+        ? {
+            eventTitle: this.props.agenda.styles.eventTitle,
+            eventSubtitle: this.props.agenda.styles.eventSubtitle,
+          }
+        : { eventTitle: {}, eventSubtitle: {} }
+
     return (
       <View style={{ flex: 1, marginTop: 20 }}>
         <EventCalendar
@@ -928,6 +937,7 @@ class DynamicCalendar extends Component {
           headerTextColor={headingTextColor}
           eventBgColor={eventBgColorPass}
           eventTextColor={eventTextColorPass}
+          customFontStyles={customFontStyles}
           key={
             bgColor + headingTextColor + eventBgColorPass + eventTextColorPass
           }

@@ -20,7 +20,13 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 export default class EventCalendar extends React.Component {
   constructor(props) {
     super(props)
-    const { headerColor, headerTextColor, eventBgColor, eventTextColor } = props
+    const {
+      headerColor,
+      headerTextColor,
+      eventBgColor,
+      eventTextColor,
+      customFontStyles,
+    } = props
     const start = props.start ? props.start : 0
     const end = props.end ? props.end : 24
 
@@ -30,7 +36,8 @@ export default class EventCalendar extends React.Component {
       headerColor,
       headerTextColor,
       eventBgColor,
-      eventTextColor
+      eventTextColor,
+      customFontStyles
     )
     this.state = {
       date: moment(this.props.initDate),
