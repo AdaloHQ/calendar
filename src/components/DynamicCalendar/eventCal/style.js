@@ -55,6 +55,7 @@ export default function styleConstructor(
       color: headerTextColor,
       fontSize: 16,
       ...theme.headerText,
+      ...customFontStyles.bodyFont,
     },
     arrow: {
       fontWeight: 'bold',
@@ -130,6 +131,7 @@ export default function styleConstructor(
       fontSize: 10,
       fontWeight: '500',
       ...theme.timeLabel,
+      ...customFontStyles.bodyFont,
     },
   }
   return StyleSheet.create(style)

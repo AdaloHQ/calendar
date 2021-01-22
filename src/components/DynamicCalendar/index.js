@@ -664,6 +664,19 @@ class DynamicCalendar extends Component {
         ' ' +
         dayValue
     }
+
+    //custom font additions
+    let customFontStyles =
+      this.props.agenda && this.props.agenda.styles
+        ? {
+            eventTitle: this.props.agenda.styles.eventTitle,
+            eventSubtitle: this.props.agenda.styles.eventSubtitle,
+            bodyFont: {
+              fontFamily: this.props.agenda.styles.eventTitle.fontFamily,
+            },
+          }
+        : { eventTitle: {}, eventSubtitle: {}, bodyFont: {} }
+
     // colors
     let {
       activeColor,
@@ -843,7 +856,6 @@ class DynamicCalendar extends Component {
         })
       }
     }
-
     if (!(editor && agendaRenderPass) && this.state.calendarRender) {
       return (
         <View style={{ flex: 1, marginTop: 20 }}>
@@ -873,6 +885,8 @@ class DynamicCalendar extends Component {
               textDayFontSize: 16,
               textMonthFontSize: 16,
               textDayHeaderFontSize: 16,
+              textDayFontFamily: customFontStyles.bodyFont.fontFamily,
+              textMonthFontFamily: customFontStyles.bodyFont.fontFamily,
               'stylesheet.calendar.header': {
                 dayHeader: {
                   marginTop: 2,
@@ -882,6 +896,7 @@ class DynamicCalendar extends Component {
                   fontSize: appStyle.textDayHeaderFontSize,
                   fontWeight: 'bold',
                   color: textColor,
+                  ...customFontStyles.bodyFont,
                 },
               },
               'stylesheet.day.basic': {
@@ -919,15 +934,6 @@ class DynamicCalendar extends Component {
         </View>
       )
     }
-    //custom font additions
-    let customFontStyles =
-      this.props.agenda && this.props.agenda.styles
-        ? {
-            eventTitle: this.props.agenda.styles.eventTitle,
-            eventSubtitle: this.props.agenda.styles.eventSubtitle,
-          }
-        : { eventTitle: {}, eventSubtitle: {} }
-
     return (
       <View style={{ flex: 1, marginTop: 20 }}>
         <EventCalendar
