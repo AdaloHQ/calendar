@@ -624,6 +624,7 @@ class DynamicCalendar extends Component {
       navigation,
       editor,
       markingStyle,
+      _fonts,
     } = this.props
     const { timeFormat } = this.state
     const mondayBeginBool = mondayBegin == 'Sunday' ? 0 : 1
@@ -675,7 +676,11 @@ class DynamicCalendar extends Component {
               fontFamily: this.props.agenda.styles.eventTitle.fontFamily,
             },
           }
-        : { eventTitle: {}, eventSubtitle: {}, bodyFont: {} }
+        : {
+            eventTitle: { fontFamily: _fonts.body },
+            eventSubtitle: { fontFamily: _fonts.body },
+            bodyFont: { fontFamily: _fonts.body },
+          }
 
     // colors
     let {
