@@ -624,6 +624,7 @@ class DynamicCalendar extends Component {
       navigation,
       editor,
       markingStyle,
+      _fonts,
     } = this.props
     const { timeFormat } = this.state
     const mondayBeginBool = mondayBegin == 'Sunday' ? 0 : 1
@@ -664,6 +665,23 @@ class DynamicCalendar extends Component {
         ' ' +
         dayValue
     }
+
+    //custom font additions
+    let customFontStyles =
+      this.props.agenda && this.props.agenda.styles
+        ? {
+            eventTitle: this.props.agenda.styles.eventTitle,
+            eventSubtitle: this.props.agenda.styles.eventSubtitle,
+            bodyFont: {
+              fontFamily: this.props.agenda.styles.eventTitle.fontFamily,
+            },
+          }
+        : {
+            eventTitle: { fontFamily: _fonts.body },
+            eventSubtitle: { fontFamily: _fonts.body },
+            bodyFont: { fontFamily: _fonts.body },
+          }
+
     // colors
     let {
       activeColor,
@@ -843,7 +861,6 @@ class DynamicCalendar extends Component {
         })
       }
     }
-
     if (!(editor && agendaRenderPass) && this.state.calendarRender) {
       return (
         <View style={{ flex: 1, marginTop: 20 }}>
@@ -873,6 +890,8 @@ class DynamicCalendar extends Component {
               textDayFontSize: 16,
               textMonthFontSize: 16,
               textDayHeaderFontSize: 16,
+              textDayFontFamily: customFontStyles.bodyFont.fontFamily,
+              textMonthFontFamily: customFontStyles.bodyFont.fontFamily,
               'stylesheet.calendar.header': {
                 dayHeader: {
                   marginTop: 2,
@@ -882,6 +901,7 @@ class DynamicCalendar extends Component {
                   fontSize: appStyle.textDayHeaderFontSize,
                   fontWeight: 'bold',
                   color: textColor,
+                  ...customFontStyles.bodyFont,
                 },
               },
               'stylesheet.day.basic': {
@@ -928,6 +948,7 @@ class DynamicCalendar extends Component {
           headerTextColor={headingTextColor}
           eventBgColor={eventBgColorPass}
           eventTextColor={eventTextColorPass}
+          customFontStyles={customFontStyles}
           key={
             bgColor + headingTextColor + eventBgColorPass + eventTextColorPass
           }

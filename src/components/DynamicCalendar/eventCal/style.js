@@ -10,8 +10,19 @@ export default function styleConstructor(
   headerColor,
   headerTextColor,
   eventBgColor,
-  eventTextColor
+  eventTextColor,
+  customFontStyles
 ) {
+  let timeStyle = {}
+  if (
+    customFontStyles.eventSubtitle.color &&
+    customFontStyles.eventSubtitle.fontFamily
+  ) {
+    timeStyle = {
+      color: customFontStyles.eventSubtitle.color,
+      fontFamily: customFontStyles.eventSubtitle.fontFamily,
+    }
+  }
   let style = {
     container: {
       flex: 1,
@@ -44,6 +55,7 @@ export default function styleConstructor(
       color: headerTextColor,
       fontSize: 16,
       ...theme.headerText,
+      ...customFontStyles.bodyFont,
     },
     arrow: {
       fontWeight: 'bold',
@@ -75,25 +87,28 @@ export default function styleConstructor(
       ...theme.event,
     },
     eventTitle: {
-      color: eventTextColor,
+      color: eventTextColor ? eventTextColor : '#fff',
       fontWeight: '600',
       minHeight: 15,
       flexWrap: 'wrap',
       ...theme.eventTitle,
+      ...customFontStyles.eventTitle,
     },
     eventSummary: {
-      color: eventTextColor,
+      color: eventTextColor ? eventTextColor : '#fff',
       fontSize: 12,
       flexWrap: 'wrap',
       ...theme.eventSummary,
+      ...customFontStyles.eventSubtitle,
     },
     eventTimes: {
       marginTop: 3,
       fontSize: 10,
       fontWeight: 'bold',
-      color: eventTextColor,
+      color: eventTextColor ? eventTextColor : '#fff',
       flexWrap: 'wrap',
       ...theme.eventTimes,
+      ...timeStyle,
     },
     line: {
       height: 1,
@@ -116,6 +131,7 @@ export default function styleConstructor(
       fontSize: 10,
       fontWeight: '500',
       ...theme.timeLabel,
+      ...customFontStyles.bodyFont,
     },
   }
   return StyleSheet.create(style)
