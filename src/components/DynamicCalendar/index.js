@@ -264,12 +264,8 @@ class DynamicCalendar extends Component {
       for (let i = 0; i < items.length; ++i) {
         eventTitleArray.push(items[i].agenda.eventTitle)
         eventSubtitleArray.push(items[i].agenda.eventSubtitle)
-        eventStarttimeArray.push(
-          items[i].eventStarttime === 0 ? new Date() : items[i].eventStarttime
-        )
-        eventEndtimeArray.push(
-          items[i].eventEndtime === 0 ? new Date() : items[i].eventEndtime
-        )
+        eventStarttimeArray.push(items[i].eventStarttime)
+        eventEndtimeArray.push(items[i].eventEndtime)
         let startTime =
           new Date(eventStarttimeArray[i]).getFullYear() +
           '-' +
