@@ -4,480 +4,13 @@ import { Calendar } from 'react-native-calendars'
 import EventCalendar from './eventCal/EventCalendar'
 import { LocaleConfig } from 'react-native-calendars'
 import * as defaultStyle from './defaultStyles'
+import setupLocales from './locales'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {
   faChevronRight,
   faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment'
-
-// construct language options
-LocaleConfig.locales['Arabic'] = {
-  monthNames: [
-    'يناير',
-    'فبراير',
-    'مارس',
-    'أبريل',
-    'مايو',
-    'يونيه',
-    'يوليه',
-    'أغسطس',
-    'سبتمبر',
-    'أكتوبر',
-    'نوفمبر',
-    'ديسمبر',
-  ],
-  monthNamesShort: [
-    'يناير',
-    'فبراير',
-    'مارس',
-    'أبريل',
-    'مايو',
-    'يونيه',
-    'يوليه',
-    'أغسطس',
-    'سبتمبر',
-    'أكتوبر',
-    'نوفمبر',
-    'ديسمبر',
-  ],
-  dayNames: [
-    'الاحد',
-    'الاثنين',
-    'الثلاثاء',
-    'الاربعاء',
-    'الاربعاء',
-    'الجمعة',
-    'السبت',
-  ],
-  dayNamesShort: [
-    'الاحد',
-    'الاثنين',
-    'الثلاثاء',
-    'الاربعاء',
-    'الاربعاء',
-    'الجمعة',
-    'السبت',
-  ],
-}
-
-LocaleConfig.locales['Chinese'] = {
-  monthNames: [
-    '一月',
-    '二月',
-    '三月',
-    '四月',
-    '五月',
-    '六月',
-    '七月',
-    '八月',
-    '九月',
-    '十月',
-    '十一月',
-    '十二月',
-  ],
-  monthNamesShort: [
-    '一',
-    '二',
-    '三',
-    '四',
-    '五',
-    '六',
-    '七',
-    '八',
-    '九',
-    '十',
-    '十一',
-    '十二',
-  ],
-  dayNames: [
-    '星期天',
-    '星期一',
-    '星期二',
-    '星期三',
-    '星期四',
-    '星期五',
-    '星期六',
-  ],
-  dayNamesShort: ['日', '一', '二', '三', '四', '五', '六'],
-}
-
-LocaleConfig.locales['English'] = {
-  monthNames: [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ],
-  monthNamesShort: [
-    'Jan.',
-    'Feb.',
-    'Mar.',
-    'Apr.',
-    'May',
-    'Jun.',
-    'Jul.',
-    'Aug.',
-    'Sept.',
-    'Oct.',
-    'Nov.',
-    'Dec.',
-  ],
-  dayNames: [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ],
-  dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-}
-
-LocaleConfig.locales['French'] = {
-  monthNames: [
-    'Janvier',
-    'Février',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juillet',
-    'Août',
-    'Septembre',
-    'Octobre',
-    'Novembre',
-    'Décembre',
-  ],
-  monthNamesShort: [
-    'Janv.',
-    'Févr.',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juil.',
-    'Août',
-    'Sept.',
-    'Oct.',
-    'Nov.',
-    'Déc.',
-  ],
-  dayNames: [
-    'Dimanche',
-    'Lundi',
-    'Mardi',
-    'Mercredi',
-    'Jeudi',
-    'Vendredi',
-    'Samedi',
-  ],
-  dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
-}
-
-LocaleConfig.locales['German'] = {
-  monthNames: [
-    'Januar',
-    'Februar',
-    'März',
-    'April',
-    'Mai',
-    'Juni',
-    'Juli',
-    'August',
-    'September',
-    'Oktober',
-    'November',
-    'Dezember',
-  ],
-  monthNamesShort: [
-    'Jan.',
-    'Feb.',
-    'Mär.',
-    'Apr.',
-    'Mai',
-    'Jun.',
-    'Jul.',
-    'Aug.',
-    'Sept.',
-    'Okt.',
-    'Nov.',
-    'Dez.',
-  ],
-  dayNames: [
-    'Sonntag',
-    'Montag',
-    'Dienstag',
-    'Mittwoch',
-    'Donnerstag',
-    'Freitag',
-    'Samstag',
-  ],
-  dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-}
-
-LocaleConfig.locales['Hindi'] = {
-  monthNames: [
-    'जनवरी',
-    'फ़रवरी',
-    'मार्च',
-    'अप्रैल',
-    'मई',
-    'जून',
-    'जुलाई',
-    'अगस्त',
-    'सितंबर',
-    'अक्तूबर',
-    'नवंबर',
-    'दिसंबर',
-  ],
-  monthNamesShort: [
-    'जनवरी',
-    'फ़रवरी',
-    'मार्च',
-    'अप्रैल',
-    'मई',
-    'जून',
-    'जुलाई',
-    'अगस्त',
-    'सितंबर',
-    'अक्तूबर',
-    'नवंबर',
-    'दिसंबर',
-  ],
-  dayNames: [
-    'रविवार',
-    'सोमवार',
-    'मंगलवार',
-    'बुधवार',
-    'गुरुवार',
-    'शुक्रवार',
-    'शनिवार',
-  ],
-  dayNamesShort: [
-    'रविवार',
-    'सोमवार',
-    'मंगलवार',
-    'बुधवार',
-    'गुरुवार',
-    'शुक्रवार',
-    'शनिवार',
-  ],
-}
-
-LocaleConfig.locales['Japanese'] = {
-  monthNames: [
-    '一月',
-    '二月',
-    '三月',
-    '四月',
-    '五月',
-    '六月',
-    '七月',
-    '八月',
-    '九月',
-    '十月',
-    '十一月',
-    '十二月',
-  ],
-  monthNamesShort: [
-    '一',
-    '二',
-    '三',
-    '四',
-    '五',
-    '六',
-    '七',
-    '八',
-    '九',
-    '十',
-    '十一',
-    '十二',
-  ],
-  dayNames: [
-    '日曜日',
-    '月曜日',
-    '火曜日',
-    '水曜日',
-    '木曜日',
-    '金曜日',
-    '土曜日',
-  ],
-  dayNamesShort: ['日', '月', '火', '水', '木', '金', '土'],
-}
-
-LocaleConfig.locales['Portuguese'] = {
-  monthNames: [
-    'Janeiro',
-    'Fevereiro',
-    'Março',
-    'Abril',
-    'Maio',
-    'Junho',
-    'Julho',
-    'Agosto',
-    'Setembro',
-    'Outubro',
-    'Novembro',
-    'Dezembro',
-  ],
-  monthNamesShort: [
-    'Jan.',
-    'Fev.',
-    'Mar.',
-    'Apr.',
-    'Mai.',
-    'Jun.',
-    'Jul.',
-    'Ago.',
-    'Set.',
-    'Out.',
-    'Nov.',
-    'Dez.',
-  ],
-  dayNames: [
-    'Domingo',
-    'Segunda-Feira',
-    'Terça-Feira',
-    'Quarta-Feira',
-    'Quinta-Feira',
-    'Sexta-Feira',
-    'Sábado',
-  ],
-  dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-}
-
-LocaleConfig.locales['Spanish'] = {
-  monthNames: [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ],
-  monthNamesShort: [
-    'Ene.',
-    'Feb.',
-    'Mar.',
-    'Abr.',
-    'May.',
-    'Jun.',
-    'Jul.',
-    'Ago.',
-    'Set.',
-    'Oct.',
-    'Nov.',
-    'Dic.',
-  ],
-  dayNames: [
-    'Domingo',
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado',
-  ],
-  dayNamesShort: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-}
-
-LocaleConfig.locales['Russian'] = {
-  monthNames: [
-    'Январь',
-    'Февраль',
-    'Март',
-    'Апрель',
-    'Май',
-    'Июнь',
-    'Июль',
-    'Август',
-    'Сентябрь',
-    'Октябрь',
-    'Ноябрь',
-    'Декабрь',
-  ],
-  monthNamesShort: [
-    'Янв.',
-    'Фев.',
-    'Мар.',
-    'Апр.',
-    'May',
-    'Июн.',
-    'Июл.',
-    'Авг.',
-    'Сен.',
-    'Окт.',
-    'Ноя.',
-    'Дек.',
-  ],
-  dayNames: [
-    'воскресенье',
-    'понедельник',
-    'вторник',
-    'среда',
-    'четверг',
-    'пятница',
-    'суббота',
-  ],
-  dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-}
-
-LocaleConfig.locales['Polish'] = {
-  monthNames: [
-    'Styczeń',
-    'Luty',
-    'Marzec',
-    'Kwiecień',
-    'Maj',
-    'Czerwiec',
-    'Lipiec',
-    'Sierpień',
-    'Wrzesień',
-    'Październik',
-    'Listopad',
-    'Grudzień',
-  ],
-  monthNamesShort: [
-    'stycz.',
-    'luty',
-    'mar.',
-    'kwiec.',
-    'maj',
-    'czerw.',
-    'lip.',
-    'sierp.',
-    'wrzes.',
-    'pazdz.',
-    'listop.',
-    'grudz.',
-  ],
-  dayNames: [
-    'Niedziela',
-    'Poniedziałek',
-    'Wtorek',
-    'Środa',
-    'Czwartek',
-    'Piątek',
-    'Sobota',
-  ],
-  dayNamesShort: ['niedz', 'pon', 'wto', 'śro', 'czw', 'piąt', 'sob'],
-}
 
 class DynamicCalendar extends Component {
   constructor(props) {
@@ -490,6 +23,7 @@ class DynamicCalendar extends Component {
       agendaEvents: [],
       timeFormat: 0,
     }
+    setupLocales()
   }
 
   componentDidUpdate(prevProps) {
@@ -506,8 +40,8 @@ class DynamicCalendar extends Component {
     this.setState({ chosenDay: day.dateString })
     let { oneEventAction } = this.props
     if (
-      oneEventAction == 'action' &&
-      this.state.datesHash.get(day.dateString) == 1
+      oneEventAction === 'action' &&
+      this.state.datesHash.get(day.dateString) === 1
     ) {
       this.setState({ goBackTrigger: true })
       let passDate = new Date(day.dateString)
@@ -522,7 +56,7 @@ class DynamicCalendar extends Component {
         }
       }
       let { onPressCalendar } = this.props.items[Number(id)]
-      onPressCalendar()
+      onPressCalendar && onPressCalendar()
     } else {
       this.setState({ calendarRender: !this.state.calendarRender })
     }
@@ -624,9 +158,10 @@ class DynamicCalendar extends Component {
       navigation,
       editor,
       markingStyle,
+      _fonts,
     } = this.props
     const { timeFormat } = this.state
-    const mondayBeginBool = mondayBegin == 'Sunday' ? 0 : 1
+    const mondayBeginBool = mondayBegin === 'Sunday' ? 0 : 1
     LocaleConfig.defaultLocale = language
     let monthValue = this.state.chosenDay.substring(
       this.state.chosenDay.length - 5,
@@ -635,7 +170,7 @@ class DynamicCalendar extends Component {
     if (
       this.state.chosenDay[this.state.chosenDay.length - 5].localeCompare(
         '0'
-      ) == 0
+      ) === 0
     ) {
       monthValue = this.state.chosenDay.substring(
         this.state.chosenDay.length - 4,
@@ -656,7 +191,7 @@ class DynamicCalendar extends Component {
       LocaleConfig.locales[language].monthNames[monthValue - 1] +
       ' ' +
       yearValue
-    if (language == 'Japanese' || language == 'Chinese') {
+    if (language === 'Japanese' || language === 'Chinese') {
       passedTitle =
         yearValue +
         ' ' +
@@ -664,6 +199,23 @@ class DynamicCalendar extends Component {
         ' ' +
         dayValue
     }
+
+    //custom font additions
+    let customFontStyles =
+      this.props.agenda && this.props.agenda.styles
+        ? {
+            eventTitle: this.props.agenda.styles.eventTitle,
+            eventSubtitle: this.props.agenda.styles.eventSubtitle,
+            bodyFont: {
+              fontFamily: this.props.agenda.styles.eventTitle.fontFamily,
+            },
+          }
+        : {
+            eventTitle: { fontFamily: _fonts.body },
+            eventSubtitle: { fontFamily: _fonts.body },
+            bodyFont: { fontFamily: _fonts.body },
+          }
+
     // colors
     let {
       activeColor,
@@ -674,6 +226,10 @@ class DynamicCalendar extends Component {
     } = colors
     // navigation
     let { defDate, minDate, maxDate, changeMonths } = navigation
+    if (maxDate === '2021-01-01') {
+      maxDate = new Date().getFullYear()
+      maxDate = `${maxDate + 1}-01-01`
+    }
     let formats = [moment.ISO_8601, 'YYYY-MM-DD']
     let startDate = moment().format('YYYY-MM-DD')
 
@@ -696,7 +252,7 @@ class DynamicCalendar extends Component {
     let eventTextColorPass = '#000000'
     let agendaRenderPass = false
     this.state.agendaEvents = []
-    if (items != undefined && items[0] != undefined) {
+    if (items !== undefined && items[0] !== undefined) {
       let { eventBgColor, eventTextColor } = items[0].agenda
       eventBgColorPass = eventBgColor
       eventTextColorPass = eventTextColor
@@ -708,8 +264,12 @@ class DynamicCalendar extends Component {
       for (let i = 0; i < items.length; ++i) {
         eventTitleArray.push(items[i].agenda.eventTitle)
         eventSubtitleArray.push(items[i].agenda.eventSubtitle)
-        eventStarttimeArray.push(items[i].eventStarttime)
-        eventEndtimeArray.push(items[i].eventEndtime)
+        eventStarttimeArray.push(
+          items[i].eventStarttime === 0 ? new Date() : items[i].eventStarttime
+        )
+        eventEndtimeArray.push(
+          items[i].eventEndtime === 0 ? new Date() : items[i].eventEndtime
+        )
         let startTime =
           new Date(eventStarttimeArray[i]).getFullYear() +
           '-' +
@@ -722,9 +282,9 @@ class DynamicCalendar extends Component {
           (new Date(eventEndtimeArray[i]).getMonth() + 1) +
           '-' +
           new Date(eventEndtimeArray[i]).getDate()
-        if (startTime == endTime) {
+        if (startTime === endTime) {
           if (
-            this.formatDate(new Date(eventStarttimeArray[i]), true) !=
+            this.formatDate(new Date(eventStarttimeArray[i]), true) !==
             this.formatDate(new Date(eventEndtimeArray[i]), true)
           ) {
             this.pushAgendaEvents(
@@ -742,7 +302,7 @@ class DynamicCalendar extends Component {
         } else {
           if (
             this.formatDate(new Date(eventStarttimeArray[i]), false) +
-              ' 23:59' !=
+              ' 23:59' !==
             this.formatDate(new Date(eventStarttimeArray[i]), true)
           ) {
             this.pushAgendaEvents(
@@ -789,7 +349,7 @@ class DynamicCalendar extends Component {
           }
         }
       }
-      if (items[0].eventStarttime == undefined) {
+      if (items[0].eventStarttime === undefined) {
         let passDate = new Date(this.state.chosenDay)
         passDate.setDate(passDate.getDate() + 1)
         this.pushAgendaEvents(
@@ -808,16 +368,16 @@ class DynamicCalendar extends Component {
       for (let i = 0; i < markedDatesArray.length; ++i) {
         let count = 0
         for (let j = 0; j < markedDatesArray.length; ++j) {
-          if (markedDatesArray[i] == markedDatesArray[j]) {
+          if (markedDatesArray[i] === markedDatesArray[j]) {
             count++
           }
         }
         this.state.datesHash.set(markedDatesArray[i], count)
       }
-      if (markingStyle == 'multi-dot') {
+      if (markingStyle === 'multi-dot') {
         markedDatesArray.forEach((day) => {
           let selected = false
-          if (day == startDate) {
+          if (day === startDate) {
             selected = true
           }
           calAgendaObject[day] = {
@@ -831,7 +391,7 @@ class DynamicCalendar extends Component {
       } else {
         markedDatesArray.forEach((day) => {
           let selected = false
-          if (day == startDate) {
+          if (day === startDate) {
             selected = true
           }
           calAgendaObject[day] = {
@@ -843,7 +403,6 @@ class DynamicCalendar extends Component {
         })
       }
     }
-
     if (!(editor && agendaRenderPass) && this.state.calendarRender) {
       return (
         <View style={{ flex: 1, marginTop: 20 }}>
@@ -873,6 +432,8 @@ class DynamicCalendar extends Component {
               textDayFontSize: 16,
               textMonthFontSize: 16,
               textDayHeaderFontSize: 16,
+              textDayFontFamily: customFontStyles.bodyFont.fontFamily,
+              textMonthFontFamily: customFontStyles.bodyFont.fontFamily,
               'stylesheet.calendar.header': {
                 dayHeader: {
                   marginTop: 2,
@@ -882,6 +443,7 @@ class DynamicCalendar extends Component {
                   fontSize: appStyle.textDayHeaderFontSize,
                   fontWeight: 'bold',
                   color: textColor,
+                  ...customFontStyles.bodyFont,
                 },
               },
               'stylesheet.day.basic': {
@@ -928,6 +490,7 @@ class DynamicCalendar extends Component {
           headerTextColor={headingTextColor}
           eventBgColor={eventBgColorPass}
           eventTextColor={eventTextColorPass}
+          customFontStyles={customFontStyles}
           key={
             bgColor + headingTextColor + eventBgColorPass + eventTextColorPass
           }
