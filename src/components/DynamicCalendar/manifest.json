@@ -208,7 +208,7 @@
           "displayName": "Latest Selectable Date",
           "type": "text",
           "placeholder": "YYYY-MM-DD",
-          "default": "2021-01-01"
+          "default": "2030-01-01"
         },
         {
           "name": "changeMonths",
