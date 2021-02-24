@@ -46,16 +46,12 @@ class DynamicCalendar extends Component {
       this.setState({ goBackTrigger: true })
       let passDate = new Date(day.dateString)
       passDate.setDate(passDate.getDate() + 1)
-      let id
-      for (let i = 0; i < this.state.agendaEvents.length; ++i) {
-        if (
-          this.formatDate(new Date(this.state.agendaEvents[i].start), false) ==
-          this.formatDate(new Date(passDate), false)
-        ) {
-          id = this.state.agendaEvents[i].id
-        }
-      }
-      let { onPressCalendar } = this.props.items[Number(id)] || {}
+      let event = this.state.agendaEvents.filter((event) =>
+        event.start.includes(day.dateString)
+      )[0]
+      let id = event ? event.id : null
+      if (!id && id !== 0) return
+      let { onPressCalendar } = this.props.items[Number(id)]
       if (onPressCalendar && typeof onPressCalendar === 'function') {
         onPressCalendar()
       }
