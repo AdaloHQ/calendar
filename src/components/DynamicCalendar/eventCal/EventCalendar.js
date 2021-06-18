@@ -25,6 +25,7 @@ export default class EventCalendar extends React.Component {
       headerTextColor,
       eventBgColor,
       eventTextColor,
+      activeColor,
       customFontStyles,
     } = props
     const start = props.start ? props.start : 0
@@ -98,7 +99,7 @@ export default class EventCalendar extends React.Component {
     const backIcon = this.props.headerBackIcon ? (
       this.props.headerBackIcon
     ) : (
-      <FontAwesomeIcon icon={faChevronLeft} style={this.styles.arrow} />
+      <FontAwesomeIcon icon={faChevronLeft} style={this.styles.arrow} color={this.props.activeColor} />
     )
 
     return (

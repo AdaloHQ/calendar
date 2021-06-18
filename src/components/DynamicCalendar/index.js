@@ -484,6 +484,7 @@ class DynamicCalendar extends Component {
           headerTextColor={headingTextColor}
           eventBgColor={eventBgColorPass}
           eventTextColor={eventTextColorPass}
+          activeColor={activeColor}
           customFontStyles={customFontStyles}
           key={
             bgColor + headingTextColor + eventBgColorPass + eventTextColorPass
