@@ -10,7 +10,7 @@
       "name": "items",
       "displayName": "What events should be displayed?",
       "type": "list",
-      "listControl": {"sort": false, "filter": false}
+      "listControl": {"sort": false, "limit": false}
     },
     {
       "name": "language",
