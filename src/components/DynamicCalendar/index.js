@@ -157,6 +157,7 @@ class DynamicCalendar extends Component {
       editor,
       markingStyle,
       _fonts,
+      openAccordion,
     } = this.props
     const { timeFormat } = this.state
     const mondayBeginBool = mondayBegin === 'Sunday' ? 0 : 1
@@ -355,7 +356,7 @@ class DynamicCalendar extends Component {
           'Example Subtitle'
         )
       }
-      if (items[0].agenda.agendaRender) {
+      if (openAccordion === 'agenda') {
         agendaRenderPass = true
       }
       this.state.datesHash = new Map()

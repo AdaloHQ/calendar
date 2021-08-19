@@ -9,7 +9,8 @@
     {
       "name": "items",
       "displayName": "What events should be displayed?",
-      "type": "list"
+      "type": "list",
+      "listControl": {"sort": false, "limit": false}
     },
     {
       "name": "language",
@@ -224,12 +225,6 @@
       "role": "listItem",
       "reference": "items",
       "props": [
-        {
-          "name": "agendaRender",
-          "displayName": "Show Preview of Agenda View",
-          "type": "boolean",
-          "default": false
-        },
         {
           "name": "timeFormat",
           "displayName": "Time Format",
