@@ -31,7 +31,7 @@ class DynamicCalendar extends Component {
     const { items } = this.props
     const { items: prevItems } = prevProps
     if (items[0]?.agenda.timeFormat !== prevItems[0]?.agenda.timeFormat) {
-      this.setState({ timeFormat: items[0].agenda.timeFormat })
+      this.setState({ timeFormat: items[0]?.agenda.timeFormat || 0 })
     }
   }
 
@@ -216,13 +216,8 @@ class DynamicCalendar extends Component {
           }
 
     // colors
-    let {
-      activeColor,
-      textColor,
-      disabledColor,
-      bgColor,
-      headingTextColor,
-    } = colors
+    let { activeColor, textColor, disabledColor, bgColor, headingTextColor } =
+      colors
     // navigation
     let { defDate, minDate, maxDate, changeMonths } = navigation
     if (maxDate === '2021-01-01') {
