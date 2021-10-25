@@ -99,7 +99,11 @@ export default class EventCalendar extends React.Component {
     const backIcon = this.props.headerBackIcon ? (
       this.props.headerBackIcon
     ) : (
-      <FontAwesomeIcon icon={faChevronLeft} style={this.styles.arrow} color={this.props.activeColor} />
+      <FontAwesomeIcon
+        icon={faChevronLeft}
+        style={this.styles.arrow}
+        color={this.props.activeColor}
+      />
     )
 
     return (

@@ -304,12 +304,13 @@ class DynamicCalendar extends Component {
               eventTitleArray[i],
               eventSubtitleArray[i]
             )
+
             markedDatesArray.push(
               this.formatDate(new Date(eventStarttimeArray[i]), false)
             )
           }
           let dates = this.getDates(new Date(startTime), new Date(endTime))
-          for (let j = 1; j < dates.length - 1; ++j) {
+          for (let j = 1; j < dates.length; ++j) {
             let datePush = this.formatDate(new Date(dates[j]), false)
             this.pushAgendaEvents(
               this.state.agendaEvents,
