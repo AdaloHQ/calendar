@@ -300,7 +300,8 @@ class DynamicCalendar extends Component {
             )
             markedDatesArray.push(datePush)
           }
-          if (formattedEndDate + '00:00' !== formattedEndDateWithTime) {
+
+          if (formattedEndDate + ' 00:00' !== formattedEndDateWithTime) {
             this.pushAgendaEvents(
               this.state.agendaEvents,
               i,
@@ -439,8 +440,6 @@ class DynamicCalendar extends Component {
       )
     }
 
-    const key =
-      bgColor + headingTextColor + eventBgColorPass + eventTextColorPass
     return (
       <View style={{ flex: 1, marginTop: 20 }}>
         <EventCalendar
@@ -452,7 +451,7 @@ class DynamicCalendar extends Component {
           eventTextColor={eventTextColorPass}
           activeColor={activeColor}
           customFontStyles={customFontStyles}
-          key={key}
+          key={`${bgColor}${headingTextColor}${eventBgColorPass}${eventTextColorPass}`}
           eventTapped={this.eventTapped}
           backButton={this.goBack}
           events={this.state.agendaEvents}
