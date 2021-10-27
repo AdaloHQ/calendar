@@ -1,5 +1,5 @@
 // @flow
-import { Platform, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 // const eventPaddingLeft = 4
 const leftMargin = 50 - 1
@@ -23,7 +23,7 @@ export default function styleConstructor(
       fontFamily: customFontStyles.eventSubtitle.fontFamily,
     }
   }
-  let style = {
+  const style = {
     container: {
       flex: 1,
       backgroundColor: '#ffff',
@@ -87,7 +87,7 @@ export default function styleConstructor(
       ...theme.event,
     },
     eventTitle: {
-      color: eventTextColor ? eventTextColor : '#fff',
+      color: eventTextColor || '#fff',
       fontWeight: '600',
       minHeight: 15,
       flexWrap: 'wrap',
@@ -95,7 +95,7 @@ export default function styleConstructor(
       ...customFontStyles.eventTitle,
     },
     eventSummary: {
-      color: eventTextColor ? eventTextColor : '#fff',
+      color: eventTextColor || '#fff',
       fontSize: 12,
       flexWrap: 'wrap',
       ...theme.eventSummary,
@@ -105,7 +105,7 @@ export default function styleConstructor(
       marginTop: 3,
       fontSize: 10,
       fontWeight: 'bold',
-      color: eventTextColor ? eventTextColor : '#fff',
+      color: eventTextColor || '#fff',
       flexWrap: 'wrap',
       ...theme.eventTimes,
       ...timeStyle,

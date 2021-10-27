@@ -11,6 +11,7 @@ import {
   faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment'
+import { formatDate } from './utils'
 
 class DynamicCalendar extends Component {
   constructor(props) {
@@ -97,34 +98,6 @@ class DynamicCalendar extends Component {
     return dates
   }
 
-  // formats date with optional time
-  formatDate = (date, wantTime) => {
-    let datePush = date.getFullYear() + '-'
-    if (date.getMonth() + 1 > 9) {
-      datePush += date.getMonth() + 1
-    } else {
-      datePush += '0' + (date.getMonth() + 1)
-    }
-    if (date.getDate() > 9) {
-      datePush += '-' + date.getDate()
-    } else {
-      datePush += '-0' + date.getDate()
-    }
-    if (wantTime) {
-      if (date.getHours() > 9) {
-        datePush += ' ' + date.getHours()
-      } else {
-        datePush += ' 0' + date.getHours()
-      }
-      if (date.getMinutes() > 9) {
-        datePush += ':' + date.getMinutes()
-      } else {
-        datePush += ':0' + date.getMinutes()
-      }
-    }
-    return datePush
-  }
-
   // pushes event details onto agenda events array
   pushAgendaEvents = (agendaEvents, i, start, end, title, subtitle) => {
     agendaEvents.push({
@@ -138,7 +111,7 @@ class DynamicCalendar extends Component {
 
   // runs when user taps an event
   eventTapped = (event) => {
-    let { onPressEvent } = this.props.items[Number(event.id)].agenda
+    const { onPressEvent } = this.props.items[Number(event.id)].agenda
     if (onPressEvent) {
       onPressEvent()
       setTimeout(() => this.setState({ calendarRender: true }), 1000)
@@ -158,6 +131,7 @@ class DynamicCalendar extends Component {
       markingStyle,
       _fonts,
       openAccordion,
+      _height,
     } = this.props
     const { timeFormat } = this.state
     const mondayBeginBool = mondayBegin === 'Sunday' ? 0 : 1
@@ -199,21 +173,24 @@ class DynamicCalendar extends Component {
         dayValue
     }
 
-    //custom font additions
-    let customFontStyles =
-      this.props.agenda && this.props.agenda.styles
-        ? {
-            eventTitle: this.props.agenda.styles.eventTitle,
-            eventSubtitle: this.props.agenda.styles.eventSubtitle,
-            bodyFont: {
-              fontFamily: this.props.agenda.styles.eventTitle.fontFamily,
-            },
-          }
-        : {
-            eventTitle: { fontFamily: _fonts.body },
-            eventSubtitle: { fontFamily: _fonts.body },
-            bodyFont: { fontFamily: _fonts.body },
-          }
+    const customStylesObj = {
+      eventTitle: this.props.agenda.styles.eventTitle,
+      eventSubtitle: this.props.agenda.styles.eventSubtitle,
+      bodyFont: {
+        fontFamily: this.props.agenda.styles.eventTitle.fontFamily,
+      },
+    }
+
+    const defaultStylesObj = {
+      eventTitle: { fontFamily: _fonts.body },
+      eventSubtitle: { fontFamily: _fonts.body },
+      bodyFont: { fontFamily: _fonts.body },
+    }
+
+    // Custom font additions
+    const customFontStyles = this.props.agenda?.styles
+      ? customStylesObj
+      : defaultStylesObj
 
     // colors
     let { activeColor, textColor, disabledColor, bgColor, headingTextColor } =
@@ -260,58 +237,59 @@ class DynamicCalendar extends Component {
         eventSubtitleArray.push(items[i].agenda.eventSubtitle)
         eventStarttimeArray.push(items[i].eventStarttime)
         eventEndtimeArray.push(items[i].eventEndtime)
-        let startTime =
-          new Date(eventStarttimeArray[i]).getFullYear() +
+
+        const startDate = new Date(eventStarttimeArray[i])
+        const endDate = new Date(eventEndtimeArray[i])
+
+        // Start Date
+        const formattedStartDate = formatDate(startDate, false)
+        const formattedStartDateWithTime = formatDate(startDate, true)
+
+        // End Date
+        const formattedEndDate = formatDate(endDate, false)
+        const formattedEndDateWithTime = formatDate(endDate, true)
+
+        const startTime =
+          startDate.getFullYear() +
           '-' +
-          (new Date(eventStarttimeArray[i]).getMonth() + 1) +
+          (startDate.getMonth() + 1) +
           '-' +
-          new Date(eventStarttimeArray[i]).getDate()
-        let endTime =
-          new Date(eventEndtimeArray[i]).getFullYear() +
+          startDate.getDate()
+        const endTime =
+          endDate.getFullYear() +
           '-' +
-          (new Date(eventEndtimeArray[i]).getMonth() + 1) +
+          (endDate.getMonth() + 1) +
           '-' +
-          new Date(eventEndtimeArray[i]).getDate()
+          endDate.getDate()
+
         if (startTime === endTime) {
-          if (
-            this.formatDate(new Date(eventStarttimeArray[i]), true) !==
-            this.formatDate(new Date(eventEndtimeArray[i]), true)
-          ) {
+          if (formattedStartDateWithTime !== formattedEndDateWithTime) {
             this.pushAgendaEvents(
               this.state.agendaEvents,
               i,
-              this.formatDate(new Date(eventStarttimeArray[i]), true),
-              this.formatDate(new Date(eventEndtimeArray[i]), true),
+              formattedStartDateWithTime,
+              formattedEndDateWithTime,
               eventTitleArray[i],
               eventSubtitleArray[i]
             )
-            markedDatesArray.push(
-              this.formatDate(new Date(eventStarttimeArray[i]), false)
-            )
+            markedDatesArray.push(formattedStartDate)
           }
         } else {
-          if (
-            this.formatDate(new Date(eventStarttimeArray[i]), false) +
-              ' 23:59' !==
-            this.formatDate(new Date(eventStarttimeArray[i]), true)
-          ) {
+          if (formattedStartDate + ' 23:59' !== formattedStartDateWithTime) {
             this.pushAgendaEvents(
               this.state.agendaEvents,
               i,
-              this.formatDate(new Date(eventStarttimeArray[i]), true),
-              this.formatDate(new Date(eventStarttimeArray[i]), false) +
-                ' 23:59',
+              formattedStartDateWithTime,
+              formattedStartDate + ' 23:59',
               eventTitleArray[i],
               eventSubtitleArray[i]
             )
 
-            markedDatesArray.push(
-              this.formatDate(new Date(eventStarttimeArray[i]), false)
-            )
+            markedDatesArray.push(formattedStartDate)
           }
           let dates = this.getDates(new Date(startTime), new Date(endTime))
-          for (let j = 1; j < dates.length; ++j) {
-            let datePush = this.formatDate(new Date(dates[j]), false)
+          for (let j = 2; j < dates.length; ++j) {
+            let datePush = formatDate(new Date(dates[j]), false)
             this.pushAgendaEvents(
               this.state.agendaEvents,
               i,
@@ -322,21 +300,16 @@ class DynamicCalendar extends Component {
             )
             markedDatesArray.push(datePush)
           }
-          if (
-            this.formatDate(new Date(eventEndtimeArray[i]), false) + ' 00:00' !=
-            this.formatDate(new Date(eventEndtimeArray[i]), true)
-          ) {
+          if (formattedEndDate + '00:00' !== formattedEndDateWithTime) {
             this.pushAgendaEvents(
               this.state.agendaEvents,
               i,
-              this.formatDate(new Date(eventEndtimeArray[i]), false) + ' 00:00',
-              this.formatDate(new Date(eventEndtimeArray[i]), true),
+              formattedEndDate + ' 00:00',
+              formattedEndDateWithTime,
               eventTitleArray[i],
               eventSubtitleArray[i]
             )
-            markedDatesArray.push(
-              this.formatDate(new Date(eventEndtimeArray[i]), false)
-            )
+            markedDatesArray.push(formattedEndDate)
           }
         }
       }
@@ -346,8 +319,8 @@ class DynamicCalendar extends Component {
         this.pushAgendaEvents(
           this.state.agendaEvents,
           0,
-          this.formatDate(new Date(passDate), false) + ' 00:15',
-          this.formatDate(new Date(passDate), false) + ' 5:15',
+          formatDate(new Date(passDate), false) + ' 00:15',
+          formatDate(new Date(passDate), false) + ' 5:15',
           'Example Title',
           'Example Subtitle'
         )
@@ -394,18 +367,12 @@ class DynamicCalendar extends Component {
         })
       }
     }
+
     if (!(editor && agendaRenderPass) && this.state.calendarRender) {
       return (
         <View style={{ flex: 1, marginTop: 20 }}>
           <Calendar
-            key={
-              activeColor +
-              textColor +
-              disabledColor +
-              bgColor +
-              headingTextColor +
-              this.props._height
-            }
+            key={`${activeColor}${textColor}${disabledColor}${bgColor}${headingTextColor}${_height}`}
             theme={{
               calendarBackground: bgColor,
               textSectionTitleColor: textColor,
@@ -457,13 +424,12 @@ class DynamicCalendar extends Component {
             maxDate={maxDate}
             current={startDate}
             hideArrows={!changeMonths}
-            renderArrow={(direction) =>
-              direction === 'left' ? (
-                <FontAwesomeIcon icon={faChevronLeft} color={activeColor} />
-              ) : (
-                <FontAwesomeIcon icon={faChevronRight} color={activeColor} />
-              )
-            }
+            renderArrow={(direction) => (
+              <FontAwesomeIcon
+                icon={direction === 'left' ? faChevronLeft : faChevronRight}
+                color={activeColor}
+              />
+            )}
             onPressArrowLeft={(subtractMonth) => subtractMonth()}
             onPressArrowRight={(addMonth) => addMonth()}
             markedDates={calAgendaObject}
@@ -472,6 +438,9 @@ class DynamicCalendar extends Component {
         </View>
       )
     }
+
+    const key =
+      bgColor + headingTextColor + eventBgColorPass + eventTextColorPass
     return (
       <View style={{ flex: 1, marginTop: 20 }}>
         <EventCalendar
@@ -483,9 +452,7 @@ class DynamicCalendar extends Component {
           eventTextColor={eventTextColorPass}
           activeColor={activeColor}
           customFontStyles={customFontStyles}
-          key={
-            bgColor + headingTextColor + eventBgColorPass + eventTextColorPass
-          }
+          key={key}
           eventTapped={this.eventTapped}
           backButton={this.goBack}
           events={this.state.agendaEvents}
