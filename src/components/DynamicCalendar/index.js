@@ -249,20 +249,23 @@ class DynamicCalendar extends Component {
         const formattedEndDate = formatDate(endDate, false)
         const formattedEndDateWithTime = formatDate(endDate, true)
 
-        const startTime =
-          startDate.getFullYear() +
-          '-' +
-          (startDate.getMonth() + 1) +
-          '-' +
-          startDate.getDate()
-        const endTime =
-          endDate.getFullYear() +
-          '-' +
-          (endDate.getMonth() + 1) +
-          '-' +
-          endDate.getDate()
+        const startTime = `${startDate.getFullYear()}-${
+          startDate.getMonth() + 1
+        }-${
+          startDate.getDate() < 10
+            ? `0${startDate.getDate()}`
+            : `${startDate.getDate()}`
+        }`
 
+        const endTime = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${
+          endDate.getDate() < 10
+            ? `0${endDate.getDate()}`
+            : `${endDate.getDate()}`
+        }`
+
+        // Marks single day events
         if (startTime === endTime) {
+          // Marks date if start and end time are different
           if (formattedStartDateWithTime !== formattedEndDateWithTime) {
             this.pushAgendaEvents(
               this.state.agendaEvents,
@@ -274,7 +277,9 @@ class DynamicCalendar extends Component {
             )
             markedDatesArray.push(formattedStartDate)
           }
+          // Marks multiple days events
         } else {
+          // Marks first day if the event ends before 23:59
           if (formattedStartDate + ' 23:59' !== formattedStartDateWithTime) {
             this.pushAgendaEvents(
               this.state.agendaEvents,
@@ -287,9 +292,11 @@ class DynamicCalendar extends Component {
 
             markedDatesArray.push(formattedStartDate)
           }
-          let dates = this.getDates(new Date(startTime), new Date(endTime))
+          // new Date(endTime) is returning undefined here \/
+          const dates = this.getDates(new Date(startTime), new Date(endTime))
+          // Adds other marked dates (starts with 2 to avoid first day)
           for (let j = 2; j < dates.length; ++j) {
-            let datePush = formatDate(new Date(dates[j]), false)
+            const datePush = formatDate(new Date(dates[j]), false)
             this.pushAgendaEvents(
               this.state.agendaEvents,
               i,
@@ -300,7 +307,7 @@ class DynamicCalendar extends Component {
             )
             markedDatesArray.push(datePush)
           }
-
+          // Marks last day if the event ends after 00:00
           if (formattedEndDate + ' 00:00' !== formattedEndDateWithTime) {
             this.pushAgendaEvents(
               this.state.agendaEvents,
