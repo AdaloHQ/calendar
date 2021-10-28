@@ -292,7 +292,6 @@ class DynamicCalendar extends Component {
 
             markedDatesArray.push(formattedStartDate)
           }
-          // new Date(endTime) is returning undefined here \/
           const dates = this.getDates(new Date(startTime), new Date(endTime))
           // Adds other marked dates (starts with 2 to avoid first day)
           for (let j = 2; j < dates.length; ++j) {
