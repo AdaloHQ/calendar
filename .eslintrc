@@ -1,10 +1,11 @@
 {
-  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "extends": ["airbnb", "plugin:prettier/recommended"],
   "env": {
     "commonjs": true,
     "jest": true,
     "node": true
   },
+  "plugins": ["react-hooks"],
   "rules": {
     "semi": ["error", "never"],
     "lines-between-class-members": [
@@ -34,9 +35,9 @@
     ],
     "curly": ["error", "multi-line"],
     "no-cond-assign": "off",
-    "prefer-const": "off",
+    "prefer-const": "error",
     "no-shadow": "off",
-    "no-console": ["error", {"allow": ["warn", "error", "info"]}],
+    "no-console": ["error", { "allow": ["warn", "error", "info"] }],
     "no-use-before-define": "off",
     "no-param-reassign": "off",
     "no-useless-escape": "off",
@@ -59,6 +60,9 @@
     "no-await-in-loop": "off",
     "no-nested-ternary": "off",
     "guard-for-in": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-prototype-builtins": 0,
+    "dot-notation": "off",
+    "import/prefer-default-export": "off"
   }
 }
