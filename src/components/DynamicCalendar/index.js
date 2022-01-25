@@ -292,9 +292,14 @@ class DynamicCalendar extends Component {
 
             markedDatesArray.push(formattedStartDate)
           }
-          const dates = this.getDates(new Date(startTime), new Date(endTime))
+          // new Date(endTime) is returning undefined here \/
+          const dates = this.getDates(
+            moment(startTime, 'YYYY-MM-DD').toDate(),
+            moment(endTime, 'YYYY-MM-DD').toDate()
+          )
+
           // Adds other marked dates (starts with 2 to avoid first day)
-          for (let j = 2; j < dates.length; ++j) {
+          for (let j = 1; j < dates.length - 1; ++j) {
             const datePush = formatDate(new Date(dates[j]), false)
             this.pushAgendaEvents(
               this.state.agendaEvents,
