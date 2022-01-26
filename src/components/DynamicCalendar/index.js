@@ -298,7 +298,7 @@ class DynamicCalendar extends Component {
             moment(endTime, 'YYYY-MM-DD').toDate()
           )
 
-          // Adds other marked dates (starts with 2 to avoid first day)
+          // Adds other marked dates (starts with 1 to avoid first day)
           for (let j = 1; j < dates.length - 1; ++j) {
             const datePush = formatDate(new Date(dates[j]), false)
             this.pushAgendaEvents(
