@@ -26,17 +26,6 @@ class DynamicCalendar extends Component {
     setupLocales()
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (!this.props.items || !prevProps.items) return
-  //   const { items } = this.props
-  //   const { items: prevItems } = prevProps
-  //   console.log('update items', items)
-  //   console.log('update time format', items[0]?.agenda.timeFormat || 0)
-  //   if (items[0]?.agenda.timeFormat !== prevItems[0]?.agenda.timeFormat) {
-  //     this.setState({ timeFormat: items[0]?.agenda.timeFormat || 0 })
-  //   }
-  // }
-
   // runs when user clicks calendar day
   onDayPress = (day) => {
     this.setState({ chosenDay: day.dateString })
