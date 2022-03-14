@@ -22,19 +22,20 @@ class DynamicCalendar extends Component {
       goBackTrigger: false,
       datesHash: new Map(),
       agendaEvents: [],
-      timeFormat: 0,
     }
     setupLocales()
   }
 
-  componentDidUpdate(prevProps) {
-    if (!this.props.items || !prevProps.items) return
-    const { items } = this.props
-    const { items: prevItems } = prevProps
-    if (items[0]?.agenda.timeFormat !== prevItems[0]?.agenda.timeFormat) {
-      this.setState({ timeFormat: items[0]?.agenda.timeFormat || 0 })
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (!this.props.items || !prevProps.items) return
+  //   const { items } = this.props
+  //   const { items: prevItems } = prevProps
+  //   console.log('update items', items)
+  //   console.log('update time format', items[0]?.agenda.timeFormat || 0)
+  //   if (items[0]?.agenda.timeFormat !== prevItems[0]?.agenda.timeFormat) {
+  //     this.setState({ timeFormat: items[0]?.agenda.timeFormat || 0 })
+  //   }
+  // }
 
   // runs when user clicks calendar day
   onDayPress = (day) => {
@@ -133,7 +134,7 @@ class DynamicCalendar extends Component {
       openAccordion,
       _height,
     } = this.props
-    const { timeFormat } = this.state
+    const timeFormat = items ? items[0]?.agenda.timeFormat || false : false
     const mondayBeginBool = mondayBegin === 'Sunday' ? 0 : 1
     LocaleConfig.defaultLocale = language
     let monthValue = this.state.chosenDay.substring(
