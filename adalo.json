@@ -1,0 +1,12 @@
+{
+  "author": "Adalo",
+  "description": "Display a list of events on a calendar.  Also includes option for an agenda view.",
+  "logo": "./logo.png",
+  "displayName": "Calendar",
+  "components": [
+    {
+      "name": "DynamicCalendar",
+      "manifest": "./src/components/DynamicCalendar/manifest.json"
+    }
+  ]
+}
