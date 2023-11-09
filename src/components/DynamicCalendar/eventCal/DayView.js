@@ -198,8 +198,8 @@ export default class DayView extends React.PureComponent {
   }
 
   render() {
-    const { styles } = this.props
-    const PACKED_EVENTS_CONTAINER_HEIGHT = 380
+    const { styles, height, marginTop } = this.props
+    const PACKED_EVENTS_CONTAINER_HEIGHT = height -  styles?.header?.height - marginTop
 
     return (
       <ScrollView

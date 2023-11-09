@@ -86,6 +86,8 @@ export default class EventCalendar extends React.Component {
   _renderItem({ index, item }) {
     const {
       width,
+      _height,
+      marginTop,
       format24h,
       initDate,
       scrollToFirst = true,
@@ -129,6 +131,8 @@ export default class EventCalendar extends React.Component {
           eventTapped={this.props.eventTapped}
           events={item}
           width={width}
+          height={_height}
+          marginTop={marginTop}
           styles={this.styles}
           scrollToFirst={scrollToFirst}
           start={start}
