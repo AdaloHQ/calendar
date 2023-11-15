@@ -369,9 +369,11 @@ class DynamicCalendar extends Component {
       }
     }
 
+    const CALENDAR_MARGIN_TOP = 20
+
     if (!(editor && agendaRenderPass) && this.state.calendarRender) {
       return (
-        <View style={{ flex: 1, marginTop: 20 }}>
+        <View style={{ flex: 1, marginTop: CALENDAR_MARGIN_TOP }}>
           <Calendar
             key={`${activeColor}${textColor}${disabledColor}${bgColor}${headingTextColor}${_height}`}
             theme={{
@@ -441,7 +443,7 @@ class DynamicCalendar extends Component {
     }
 
     return (
-      <View style={{ flex: 1, marginTop: 20 }}>
+      <View style={{ flex: 1, marginTop: CALENDAR_MARGIN_TOP }}>
         <EventCalendar
           {...this.props}
           title={passedTitle}
@@ -459,6 +461,7 @@ class DynamicCalendar extends Component {
           initDate={this.state.chosenDay}
           scrollToFirst
           format24h={timeFormat}
+          marginTop={CALENDAR_MARGIN_TOP}
         />
       </View>
     )
