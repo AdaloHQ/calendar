@@ -1,5 +1,5 @@
 // @flow
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
 import React from 'react'
 import moment from 'moment'
 import _ from 'lodash'
@@ -201,18 +201,22 @@ export default class DayView extends React.PureComponent {
     const { styles, height, marginTop } = this.props
     const PACKED_EVENTS_CONTAINER_HEIGHT = height -  ((styles?.header?.height) || 0) - marginTop
 
+    console.log('AVOHAI', PACKED_EVENTS_CONTAINER_HEIGHT)
+
     return (
-      <ScrollView
-        ref={(ref) => (this._scrollView = ref)}
-        contentContainerStyle={[
-          styles.contentStyle,
-          { width: this.props.width, height: PACKED_EVENTS_CONTAINER_HEIGHT },
-        ]}
-      >
+      <SafeAreaView style={{ height: PACKED_EVENTS_CONTAINER_HEIGHT }}>
+        <ScrollView
+          ref={(ref) => (this._scrollView = ref)}
+          contentContainerStyle={[
+            styles.contentStyle,
+            { width: this.props.width, height: this.calendarHeight + 100 },
+          ]}
+        >
         {this._renderLines()}
         {this._renderEvents()}
         {/* {this._renderRedLine()} */}
       </ScrollView>
+      </SafeAreaView>
     )
   }
 }
