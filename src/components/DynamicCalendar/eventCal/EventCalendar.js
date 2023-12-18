@@ -31,6 +31,8 @@ export default class EventCalendar extends React.Component {
     const start = props.start ? props.start : 0
     const end = props.end ? props.end : 24
 
+    this.calendarRef = React.createRef()
+
     this.styles = styleConstructor(
       props.styles,
       (end - start) * 100,
@@ -150,7 +152,9 @@ export default class EventCalendar extends React.Component {
       index - this.props.size,
       'days'
     )
-    this.refs.calendar.scrollToIndex({ index, animated: false })
+
+    this.calendarRef.current.scrollToIndex({ index, animated: false })
+
     this.setState({ index, date })
   }
 
@@ -174,7 +178,7 @@ export default class EventCalendar extends React.Component {
       <View style={[this.styles.container, { width }]}>
         <VirtualizedList
           scrollEnabled={false}
-          ref="calendar"
+          ref={this.calendarRef}
           windowSize={2}
           initialNumToRender={2}
           initialScrollIndex={this.props.size}
