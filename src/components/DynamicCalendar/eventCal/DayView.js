@@ -201,7 +201,7 @@ export default class DayView extends React.PureComponent {
     const { styles, height, marginTop } = this.props
     const PACKED_EVENTS_CONTAINER_HEIGHT = height -  ((styles?.header?.height) || 0) - marginTop
 
-    console.log('AVOHAI', PACKED_EVENTS_CONTAINER_HEIGHT)
+    const CALENDAR_PADDING = 100
 
     return (
       <SafeAreaView style={{ height: PACKED_EVENTS_CONTAINER_HEIGHT }}>
@@ -209,7 +209,10 @@ export default class DayView extends React.PureComponent {
           ref={(ref) => (this._scrollView = ref)}
           contentContainerStyle={[
             styles.contentStyle,
-            { width: this.props.width, height: this.calendarHeight + 100 },
+            {
+              width: this.props.width,
+              height: this.calendarHeight + CALENDAR_PADDING
+            },
           ]}
         >
         {this._renderLines()}
