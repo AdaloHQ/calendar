@@ -131,6 +131,7 @@ export default class EventCalendar extends React.Component {
           headerStyle={this.props.headerStyle}
           renderEvent={this.props.renderEvent}
           eventTapped={this.props.eventTapped}
+          _setScrollEnabled={this.props._setScrollEnabled}
           events={item}
           width={width}
           height={_height}
@@ -169,6 +170,7 @@ export default class EventCalendar extends React.Component {
 
   _onBackButton() {
     this.props.backButton()
+    this.props._setScrollEnabled && this.props._setScrollEnabled(true)
   }
 
   render() {

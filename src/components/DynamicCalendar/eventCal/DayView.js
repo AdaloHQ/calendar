@@ -42,6 +42,7 @@ export default class DayView extends React.PureComponent {
 
   componentDidMount() {
     this.props.scrollToFirst && this.scrollToFirst()
+    this.props._setScrollEnabled && this.props._setScrollEnabled(false)
   }
 
   scrollToFirst() {
