@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 import { Calendar, LocaleConfig } from 'react-native-calendars'
 import EventCalendar from './eventCal/EventCalendar'
 import * as defaultStyle from './defaultStyles'
@@ -442,6 +442,8 @@ class DynamicCalendar extends Component {
       )
     }
 
+    const screenWidth = Dimensions.get('window').width
+
     return (
       <View style={{ flex: 1, marginTop: CALENDAR_MARGIN_TOP }}>
         <EventCalendar
@@ -457,7 +459,7 @@ class DynamicCalendar extends Component {
           eventTapped={this.eventTapped}
           backButton={this.goBack}
           events={this.state.agendaEvents}
-          width={this.props._width}
+          width={screenWidth}
           initDate={this.state.chosenDay}
           scrollToFirst
           format24h={timeFormat}
