@@ -66,11 +66,6 @@ export default class EventCalendar extends React.Component {
     formatHeader: 'DD MMMM YYYY',
   }
 
-  _getItemLayout(data, index) {
-    const { width } = this.props
-    return { length: width, offset: width * index, index }
-  }
-
   _getItem(events, index) {
     const date = moment(this.props.initDate).add(
       index - this.props.size,
@@ -188,7 +183,6 @@ export default class EventCalendar extends React.Component {
           getItemCount={() => this.props.size * 2}
           getItem={this._getItem.bind(this)}
           keyExtractor={(item, index) => index.toString()}
-          getItemLayout={this._getItemLayout.bind(this)}
           horizontal
           pagingEnabled
           renderItem={this._renderItem.bind(this)}
