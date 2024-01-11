@@ -459,7 +459,7 @@ class DynamicCalendar extends Component {
           eventTapped={this.eventTapped}
           backButton={this.goBack}
           events={this.state.agendaEvents}
-          width={screenWidth}
+          width={this.props._width}
           initDate={this.state.chosenDay}
           scrollToFirst
           format24h={timeFormat}

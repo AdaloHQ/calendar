@@ -209,7 +209,6 @@ export default class EventCalendar extends React.Component {
         {/* /> */}
 
         <FlatList
-
           data={events}
           horizontal
           pagingEnabled
