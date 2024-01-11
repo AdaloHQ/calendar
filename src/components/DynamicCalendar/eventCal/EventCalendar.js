@@ -177,8 +177,6 @@ export default class EventCalendar extends React.Component {
   render() {
     const { width, virtualizedListProps, flatListProps, events, initDate } = this.props
 
-    console.log('how many events', events)
-
     return (
       <View style={[this.styles.container, { width }]}>
         {/* <VirtualizedList */}
