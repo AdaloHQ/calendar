@@ -33,7 +33,6 @@ export default class DayView extends React.PureComponent {
     }
 
     const packedEvents = populateEvents(props.events, width, props.start)
-    console.log('packedEvents', packedEvents, props.events)
     let initPosition =
       _.min(_.map(packedEvents, 'top')) -
       this.calendarHeight / (props.end - props.start)

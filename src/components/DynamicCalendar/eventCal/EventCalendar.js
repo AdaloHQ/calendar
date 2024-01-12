@@ -1,6 +1,5 @@
 // @flow
 import {
-  VirtualizedList,
   FlatList,
   View,
   TouchableOpacity,
@@ -99,7 +98,6 @@ export default class EventCalendar extends React.Component {
       formatHeader,
       upperCaseHeader = false,
     } = this.props
-    console.log('render ONE event', item)
     const date = moment(initDate).add(index - this.props.size, 'days')
 
     const backIcon = this.props.headerBackIcon ? (
@@ -186,8 +184,6 @@ export default class EventCalendar extends React.Component {
       )
     })
 
-    console.log('filteredEvents please work im tired', filteredEvents)
-
     if(filteredEvents.length === 0) {
       filteredEvents = [{}]
     }
@@ -216,34 +212,6 @@ export default class EventCalendar extends React.Component {
           }}
           {...flatListProps}
         />
-        {/* <VirtualizedList */}
-        {/*   scrollEnabled={false} */}
-        {/*   ref={this.calendarRef} */}
-        {/*   windowSize={2} */}
-        {/*   initialNumToRender={2} */}
-        {/*   initialScrollIndex={this.props.size} */}
-        {/*   data={events} */}
-        {/*   getItemCount={() => this.props.size * 2} */}
-        {/*   getItem={this._getItem.bind(this)} */}
-        {/*   keyExtractor={(item, index) => index.toString()} */}
-        {/*   getItemLayout={this._getItemLayout.bind(this)} */}
-        {/*   horizontal */}
-        {/*   pagingEnabled */}
-        {/*   renderItem={this._renderItem.bind(this)} */}
-        {/*   style={{ width: width }} */}
-        {/*   onMomentumScrollEnd={(event) => { */}
-        {/*     const index = parseInt(event.nativeEvent.contentOffset.x / width) */}
-        {/*     const date = moment(initDate).add( */}
-        {/*       index - this.props.size, */}
-        {/*       'days' */}
-        {/*     ) */}
-        {/*     if (this.props.dateChanged) { */}
-        {/*       this.props.dateChanged(date.format('YYYY-MM-DD')) */}
-        {/*     } */}
-        {/*     this.setState({ index, date }) */}
-        {/*   }} */}
-        {/*   {...virtualizedListProps} */}
-        {/* /> */}
       </View>
     )
   }
