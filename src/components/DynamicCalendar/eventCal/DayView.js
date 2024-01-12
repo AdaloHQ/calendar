@@ -22,7 +22,18 @@ export default class DayView extends React.PureComponent {
     super(props)
     this.calendarHeight = (props.end - props.start) * 100
     const width = props.width - LEFT_MARGIN
+    const events = props.events
+
+    if (events.length === 1 && Object.keys(events[0]).length === 0) {
+      this.state = {
+        _scrollY: 0,
+        packedEvents: [],
+      }
+      return
+    }
+
     const packedEvents = populateEvents(props.events, width, props.start)
+    console.log('packedEvents', packedEvents, props.events)
     let initPosition =
       _.min(_.map(packedEvents, 'top')) -
       this.calendarHeight / (props.end - props.start)
@@ -35,6 +46,14 @@ export default class DayView extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const width = nextProps.width - LEFT_MARGIN
+
+    if (nextProps.events.length === 1 && Object.keys(nextProps.events[0]).length === 0) {
+      this.setState({
+        packedEvents: [],
+      })
+      return
+    }
+
     this.setState({
       packedEvents: populateEvents(nextProps.events, width, nextProps.start),
     })

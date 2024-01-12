@@ -99,6 +99,7 @@ export default class EventCalendar extends React.Component {
       formatHeader,
       upperCaseHeader = false,
     } = this.props
+    console.log('render ONE event', item)
     const date = moment(initDate).add(index - this.props.size, 'days')
 
     const backIcon = this.props.headerBackIcon ? (
@@ -177,8 +178,44 @@ export default class EventCalendar extends React.Component {
   render() {
     const { width, virtualizedListProps, flatListProps, events, initDate } = this.props
 
+    let filteredEvents = _.filter(events, (event) => {
+      const eventStartTime = moment(event.start)
+      return (
+        eventStartTime >= moment(initDate).clone().startOf('day') &&
+        eventStartTime <= moment(initDate).clone().endOf('day')
+      )
+    })
+
+    console.log('ALL filtered events', filteredEvents)
+
+    if(filteredEvents.length === 0) {
+      filteredEvents = [{}]
+    }
+
+
     return (
       <View style={[this.styles.container, { width }]}>
+        <FlatList
+          data={filteredEvents}
+          horizontal
+          pagingEnabled
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => this._renderItem({ item: filteredEvents, index })}
+          initialScrollIndex={this.props.size}
+          getItemLayout={this._getItemLayout.bind(this)}
+          onMomentumScrollEnd={(event) => {
+            const index = parseInt(event.nativeEvent.contentOffset.x / width)
+            const date = moment(initDate).add(
+              index - this.props.size,
+              'days'
+            )
+            if (this.props.dateChanged) {
+              this.props.dateChanged(date.format('YYYY-MM-DD'))
+            }
+            this.setState({ index, date })
+          }}
+          {...flatListProps}
+        />
         {/* <VirtualizedList */}
         {/*   scrollEnabled={false} */}
         {/*   ref={this.calendarRef} */}
@@ -207,28 +244,6 @@ export default class EventCalendar extends React.Component {
         {/*   }} */}
         {/*   {...virtualizedListProps} */}
         {/* /> */}
-
-        <FlatList
-          data={events}
-          horizontal
-          pagingEnabled
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => this._renderItem({ item: [item], index })}
-          initialScrollIndex={this.props.size}
-          getItemLayout={this._getItemLayout.bind(this)}
-          onMomentumScrollEnd={(event) => {
-            const index = parseInt(event.nativeEvent.contentOffset.x / width)
-            const date = moment(initDate).add(
-              index - this.props.size,
-              'days'
-            )
-            if (this.props.dateChanged) {
-              this.props.dateChanged(date.format('YYYY-MM-DD'))
-            }
-            this.setState({ index, date })
-          }}
-          {...flatListProps} // Additional FlatList props
-        />
       </View>
     )
   }
