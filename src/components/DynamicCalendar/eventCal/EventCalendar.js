@@ -186,7 +186,7 @@ export default class EventCalendar extends React.Component {
       )
     })
 
-    console.log('ALL filtered events', filteredEvents)
+    console.log('filteredEvents please work im tired', filteredEvents)
 
     if(filteredEvents.length === 0) {
       filteredEvents = [{}]
@@ -196,11 +196,11 @@ export default class EventCalendar extends React.Component {
     return (
       <View style={[this.styles.container, { width }]}>
         <FlatList
-          data={filteredEvents}
+          data={[{}]}
           horizontal
           pagingEnabled
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => this._renderItem({ item: filteredEvents, index })}
+          keyExtractor={(index) => index.toString()}
+          renderItem={({ index }) => this._renderItem({ item: filteredEvents, index })}
           initialScrollIndex={this.props.size}
           getItemLayout={this._getItemLayout.bind(this)}
           onMomentumScrollEnd={(event) => {

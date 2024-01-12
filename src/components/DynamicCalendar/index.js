@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, View } from 'react-native'
+import { View } from 'react-native'
 import { Calendar, LocaleConfig } from 'react-native-calendars'
 import EventCalendar from './eventCal/EventCalendar'
 import * as defaultStyle from './defaultStyles'
@@ -441,8 +441,6 @@ class DynamicCalendar extends Component {
         </View>
       )
     }
-
-    const screenWidth = Dimensions.get('window').width
 
     return (
       <View style={{ flex: 1, marginTop: CALENDAR_MARGIN_TOP }}>
