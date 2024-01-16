@@ -1,5 +1,5 @@
 // @flow
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
 import React from 'react'
 import moment from 'moment'
 import _ from 'lodash'
@@ -22,6 +22,16 @@ export default class DayView extends React.PureComponent {
     super(props)
     this.calendarHeight = (props.end - props.start) * 100
     const width = props.width - LEFT_MARGIN
+    const events = props.events
+
+    if (events.length === 1 && Object.keys(events[0]).length === 0) {
+      this.state = {
+        _scrollY: 0,
+        packedEvents: [],
+      }
+      return
+    }
+
     const packedEvents = populateEvents(props.events, width, props.start)
     let initPosition =
       _.min(_.map(packedEvents, 'top')) -
@@ -33,8 +43,16 @@ export default class DayView extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const width = nextProps.width - LEFT_MARGIN
+
+    if (nextProps.events.length === 1 && Object.keys(nextProps.events[0]).length === 0) {
+      this.setState({
+        packedEvents: [],
+      })
+      return
+    }
+
     this.setState({
       packedEvents: populateEvents(nextProps.events, width, nextProps.start),
     })
@@ -42,6 +60,7 @@ export default class DayView extends React.PureComponent {
 
   componentDidMount() {
     this.props.scrollToFirst && this.scrollToFirst()
+    this.props._setScrollEnabled && this.props._setScrollEnabled(false)
   }
 
   scrollToFirst() {
@@ -201,18 +220,25 @@ export default class DayView extends React.PureComponent {
     const { styles, height, marginTop } = this.props
     const PACKED_EVENTS_CONTAINER_HEIGHT = height -  ((styles?.header?.height) || 0) - marginTop
 
+    const CALENDAR_PADDING = 100
+
     return (
-      <ScrollView
-        ref={(ref) => (this._scrollView = ref)}
-        contentContainerStyle={[
-          styles.contentStyle,
-          { width: this.props.width, height: PACKED_EVENTS_CONTAINER_HEIGHT },
-        ]}
-      >
+      <SafeAreaView style={{ height: PACKED_EVENTS_CONTAINER_HEIGHT }}>
+        <ScrollView
+          ref={(ref) => (this._scrollView = ref)}
+          contentContainerStyle={[
+            styles.contentStyle,
+            {
+              width: this.props.width,
+              height: this.calendarHeight + CALENDAR_PADDING
+            },
+          ]}
+        >
         {this._renderLines()}
         {this._renderEvents()}
         {/* {this._renderRedLine()} */}
       </ScrollView>
+      </SafeAreaView>
     )
   }
 }

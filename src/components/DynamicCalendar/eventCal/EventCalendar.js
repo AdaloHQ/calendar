@@ -1,6 +1,6 @@
 // @flow
 import {
-  VirtualizedList,
+  FlatList,
   View,
   TouchableOpacity,
   Image,
@@ -30,6 +30,8 @@ export default class EventCalendar extends React.Component {
     } = props
     const start = props.start ? props.start : 0
     const end = props.end ? props.end : 24
+
+    this.calendarRef = React.createRef()
 
     this.styles = styleConstructor(
       props.styles,
@@ -129,6 +131,7 @@ export default class EventCalendar extends React.Component {
           headerStyle={this.props.headerStyle}
           renderEvent={this.props.renderEvent}
           eventTapped={this.props.eventTapped}
+          _setScrollEnabled={this.props._setScrollEnabled}
           events={item}
           width={width}
           height={_height}
@@ -150,7 +153,9 @@ export default class EventCalendar extends React.Component {
       index - this.props.size,
       'days'
     )
-    this.refs.calendar.scrollToIndex({ index, animated: false })
+
+    this.calendarRef.current.scrollToIndex({ index, animated: false })
+
     this.setState({ index, date })
   }
 
@@ -165,31 +170,38 @@ export default class EventCalendar extends React.Component {
 
   _onBackButton() {
     this.props.backButton()
+    this.props._setScrollEnabled && this.props._setScrollEnabled(true)
   }
 
   render() {
-    const { width, virtualizedListProps, events, initDate } = this.props
+    const { width, virtualizedListProps, flatListProps, events, initDate } = this.props
+
+    let filteredEvents = _.filter(events, (event) => {
+      const eventStartTime = moment(event.start)
+      return (
+        eventStartTime >= moment(initDate).clone().startOf('day') &&
+        eventStartTime <= moment(initDate).clone().endOf('day')
+      )
+    })
+
+    if(filteredEvents.length === 0) {
+      filteredEvents = [{}]
+    }
+
 
     return (
       <View style={[this.styles.container, { width }]}>
-        <VirtualizedList
-          scrollEnabled={false}
-          ref="calendar"
-          windowSize={2}
-          initialNumToRender={2}
-          initialScrollIndex={this.props.size}
-          data={events}
-          getItemCount={() => this.props.size * 2}
-          getItem={this._getItem.bind(this)}
-          keyExtractor={(item, index) => index.toString()}
-          getItemLayout={this._getItemLayout.bind(this)}
+        <FlatList
+          data={[{}]}
           horizontal
           pagingEnabled
-          renderItem={this._renderItem.bind(this)}
-          style={{ width: width }}
+          keyExtractor={(index) => index.toString()}
+          renderItem={({ index }) => this._renderItem({ item: filteredEvents, index })}
+          initialScrollIndex={this.props.size}
+          getItemLayout={this._getItemLayout.bind(this)}
           onMomentumScrollEnd={(event) => {
             const index = parseInt(event.nativeEvent.contentOffset.x / width)
-            const date = moment(this.props.initDate).add(
+            const date = moment(initDate).add(
               index - this.props.size,
               'days'
             )
@@ -198,7 +210,7 @@ export default class EventCalendar extends React.Component {
             }
             this.setState({ index, date })
           }}
-          {...virtualizedListProps}
+          {...flatListProps}
         />
       </View>
     )
