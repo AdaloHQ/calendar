@@ -43,7 +43,7 @@ export default class DayView extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const width = nextProps.width - LEFT_MARGIN
 
     if (nextProps.events.length === 1 && Object.keys(nextProps.events[0]).length === 0) {
