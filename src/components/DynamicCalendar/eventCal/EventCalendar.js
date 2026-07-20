@@ -6,7 +6,7 @@ import {
   Image,
   Text,
 } from 'react-native'
-import _ from 'lodash'
+import filter from 'lodash/filter'
 import moment from 'moment'
 import React from 'react'
 
@@ -15,7 +15,7 @@ import styleConstructor from './style'
 import DayView from './DayView'
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
 
 export default class EventCalendar extends React.Component {
   constructor(props) {
@@ -76,7 +76,7 @@ export default class EventCalendar extends React.Component {
       index - this.props.size,
       'days'
     )
-    return _.filter(events, (event) => {
+    return filter(events, (event) => {
       const eventStartTime = moment(event.start)
       return (
         eventStartTime >= date.clone().startOf('day') &&
@@ -131,7 +131,6 @@ export default class EventCalendar extends React.Component {
           headerStyle={this.props.headerStyle}
           renderEvent={this.props.renderEvent}
           eventTapped={this.props.eventTapped}
-          _setScrollEnabled={this.props._setScrollEnabled}
           events={item}
           width={width}
           height={_height}
@@ -170,13 +169,12 @@ export default class EventCalendar extends React.Component {
 
   _onBackButton() {
     this.props.backButton()
-    this.props._setScrollEnabled && this.props._setScrollEnabled(true)
   }
 
   render() {
     const { width, virtualizedListProps, flatListProps, events, initDate } = this.props
 
-    let filteredEvents = _.filter(events, (event) => {
+    let filteredEvents = filter(events, (event) => {
       const eventStartTime = moment(event.start)
       return (
         eventStartTime >= moment(initDate).clone().startOf('day') &&
