@@ -5,10 +5,11 @@ import EventCalendar from './eventCal/EventCalendar'
 import * as defaultStyle from './defaultStyles'
 import setupLocales from './locales'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import {
-  faChevronRight,
-  faChevronLeft,
-} from '@fortawesome/free-solid-svg-icons'
+// Import icons from their individual modules rather than the package barrel
+// (`@fortawesome/free-solid-svg-icons`), whose index.es.js is ~1.3MB and trips
+// Babel's >500KB code-generator deopt during the build.
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
 import moment from 'moment'
 import { formatDate } from './utils'
 

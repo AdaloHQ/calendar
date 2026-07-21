@@ -2,7 +2,8 @@
 import { View, Text, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
 import React from 'react'
 import moment from 'moment'
-import _ from 'lodash'
+import min from 'lodash/min'
+import map from 'lodash/map'
 import populateEvents from './Packer'
 
 const LEFT_MARGIN = 60 - 1
@@ -34,7 +35,7 @@ export default class DayView extends React.PureComponent {
 
     const packedEvents = populateEvents(props.events, width, props.start)
     let initPosition =
-      _.min(_.map(packedEvents, 'top')) -
+      min(map(packedEvents, 'top')) -
       this.calendarHeight / (props.end - props.start)
     initPosition = initPosition < 0 ? 0 : initPosition
     this.state = {
@@ -60,7 +61,6 @@ export default class DayView extends React.PureComponent {
 
   componentDidMount() {
     this.props.scrollToFirst && this.scrollToFirst()
-    this.props._setScrollEnabled && this.props._setScrollEnabled(false)
   }
 
   scrollToFirst() {
@@ -226,6 +226,11 @@ export default class DayView extends React.PureComponent {
       <SafeAreaView style={{ height: PACKED_EVENTS_CONTAINER_HEIGHT }}>
         <ScrollView
           ref={(ref) => (this._scrollView = ref)}
+          // Let the agenda's hourly timeline scroll while still allowing the
+          // parent screen ScrollView to scroll (nested scrolling). We no longer
+          // disable the parent scroll on mount, so both scrollers coexist:
+          // gesture handoff at the edges on native, CSS overflow on web.
+          nestedScrollEnabled
           contentContainerStyle={[
             styles.contentStyle,
             {
