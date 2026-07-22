@@ -12,9 +12,10 @@
     "login": "adalo login",
     "start:local": "ADALO_DEV_SERVER=http://localhost:3035 yarn start",
     "login:local": "ADALO_BACKEND_SERVER=http://localhost:8084 yarn run login",
-    "deploy": "adalo deploy",
+    "preflight": "node scripts/preflight-publish.js",
+    "deploy": "yarn preflight && adalo deploy",
     "deploy:local": "REGISTRY_URL=http://localhost:8000 yarn run deploy",
-    "publish": " adalo publish",
+    "publish": "yarn preflight && adalo publish",
     "publish:local": "REGISTRY_URL=http://localhost:8000 yarn run publish"
   },
   "peerDependencies": {
